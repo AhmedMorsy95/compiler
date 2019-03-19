@@ -52,7 +52,13 @@ def read_input(file_path):
     and values : { [a,b,c,d,e....z], [reg_def_values2], "rejex_string1", "rejex_string2", [for, while, if ..etc],
       punctuations_values, ...etc }
 
-    '''
+    regex_dict : dictionary mapping regular expressions to lists
+    rest_dict : dictionary mapping regex, keywords, punctuations ..etc to their values
 
+    separated into two dictionaries to ma
+    '''
+    regex_dict = {}
+    rest_dict = {}
+    return regex_dict, rest_dict
 
 # now we have the regex
