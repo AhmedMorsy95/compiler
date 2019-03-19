@@ -11,9 +11,10 @@ class NodeGenerator:
         self.all_nodes.append(n)
         return n
 
+
 if __name__ == '__main__':
     # just messing around
-    ng=NodeGenerator()
+    ng = NodeGenerator()
     n1 = ng.make_node()
     n2 = ng.make_node()
     n3 = ng.make_node()
@@ -23,4 +24,4 @@ if __name__ == '__main__':
 
     print(n1.id , n2.id, n3.id)
     print(n2.move_destinations)
-    print("all nodes", [ x.id for x in ng.all_nodes] )
+    print("all nodes", [x.id for x in ng.all_nodes] )
