@@ -2,7 +2,7 @@ from NodeGenerator import NodeGenerator
 from node import *
 import queue
 
-# this class represents a single nfa that has a start node and maybe 0 or more accept (finish) nodes
+# this class represents a single NFA that has a start node and maybe 0 or more accept (finish) nodes
 
 class Graph:
 
@@ -65,7 +65,12 @@ class Graph:
         return None
 
     @staticmethod
-    def keenClosure(graphs):
+    def keenClosure(graph):
+        """
+        uses the kleen closure operator on a graph to produce a new graph using thompson algorithm
+        :param graph: a graph
+        :return:
+        """
 
         return None
 
