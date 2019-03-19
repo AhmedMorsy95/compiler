@@ -61,12 +61,22 @@ def read_input(file_path):
         file_lines = file.readlines()
     file.close()
     keywords_list = []
+    punc_list = []
     keywords_regex = re.compile(r"\{.*\}")
+    punc_regex = re.compile(r"\[.*\]")
     for line in file_lines:
         if keywords_regex.match(line) is not None:
             keywords_list.extend([ k for k in line[1:-2].split(' ') if k != ''])
+        elif punc_regex.match(line) is not None:
+            elements = line[1:-2].split(' ')
+            for element in elements:
+                if re.match(r"\\.", element) is not None:
+                    punc_list.append(element[1:])
+                else:
+                    punc_list.append(element)
     return {
-    "keywords": keywords_list
+    "keywords": keywords_list,
+    "punctuation": punc_list
     }
 
 # now we have the regex
