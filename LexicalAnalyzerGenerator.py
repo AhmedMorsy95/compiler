@@ -16,11 +16,23 @@ class LexicalAnalyzerGenerator:
         self.nfa_to_dfa = nfa_to_dfa()
         self.minimize_dfa = minimize()
 
+    def make_transition_table(self):
+        print("TODO")
+        tt= none
+        return tt
+
+    def make_lexical_analyzer(self,min_dfa):
+        print("call lexical analyzer class constructor and return and object")
+        la=LexicalAnalyzer()
+        return la
+
     def generate(self,input_file):
         regex = self.read_input_file(input_file)
         nfa = self.regex_to_nfa(regex)
         dfa = self.nfa_to_dfa(nfa)
         min_dfa = self.minimize_dfa(dfa)
+        lex_analyzer = self.make_lexical_analyzer(min_dfa)
+        trans_table = self.make_transition_table()
 
         return lex_analyzer,trans_table
 
