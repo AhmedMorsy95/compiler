@@ -1,4 +1,4 @@
-
+import re
 # Lexical Rules Input File Format
 # • Lexical rules input file is a text file.
 # • Regular definitions are lines in the form LHS = RHS
@@ -57,8 +57,16 @@ def read_input(file_path):
 
     separated into two dictionaries to ma
     '''
-    regex_dict = {}
-    rest_dict = {}
-    return regex_dict, rest_dict
+    with open(file_path, 'r') as file:
+        file_lines = file.readlines()
+    file.close()
+    keywords_list = []
+    keywords_regex = re.compile(r"\{.*\}")
+    for line in file_lines:
+        if keywords_regex.match(line) is not None:
+            keywords_list.extend([ k for k in line[1:-2].split(' ') if k != ''])
+    return {
+    "keywords": keywords_list
+    }
 
 # now we have the regex
