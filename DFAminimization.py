@@ -6,8 +6,5 @@
 
 
 def minimize(DFA):
-
-
-
     # returns graph same structure as DFA but probably with less states
-
+    print()

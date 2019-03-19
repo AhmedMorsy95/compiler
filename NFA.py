@@ -17,7 +17,7 @@ definitions = ["letter" , "digit" , "digits" ]
 
 #input is 1. list of definitions as strings
 #         2. list of regex as strings
-def convertRegexToNFA(regex):
+def convert_regex_to_nfa(regex):
 
     return
 
