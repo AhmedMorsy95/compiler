@@ -67,14 +67,14 @@ class Graph:
 
 if __name__ == '__main__':
     # just messin around
-    a = Node()
-    c = Node()
-    b = Node()
-    d = Node()
-    a.addEdge(c,"hamada")
-    a.addEdge(d,"adel")
-    c.addEdge(b,"rewesh")
-    d.addEdge(b,"not rewesh")
+    a = Node(1)
+    c = Node(1)
+    b = Node(1)
+    d = Node(1)
+    a.add_edge(c,"hamada")
+    a.add_edge(d,"adel")
+    c.add_edge(b,"rewesh")
+    d.add_edge(b,"not rewesh")
     g = Graph(a,[b])
     g.bfs()
     g.dfs()

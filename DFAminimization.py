@@ -5,6 +5,7 @@
 #   2. keep dividing classes until for each class all states go to the same class after all transitions
 
 
-def minimize(DFA):
+def minimize(dfa):
     # returns graph same structure as DFA but probably with less states
-    print()
+    min_dfa = None
+    return min_dfa
