@@ -1,4 +1,5 @@
 import re
+from .definition import Definition
 # Lexical Rules Input File Format
 # • Lexical rules input file is a text file.
 # • Regular definitions are lines in the form LHS = RHS
@@ -44,26 +45,17 @@ def read_input(file_path):
 
     :param file_path: the path to the text file
 
-    :return: dictionary with
-
-    keys :{ reg_def_name1 : (for example: letter) , reg_def_name2, regex_name1, regex_name2, keywords, punctuations,
-     reserved_symbols, ..etc}
-
-    and values : { [a,b,c,d,e....z], [reg_def_values2], "rejex_string1", "rejex_string2", [for, while, if ..etc],
-      punctuations_values, ...etc }
-
-    regex_dict : dictionary mapping regular expressions to lists
-    rest_dict : dictionary mapping regex, keywords, punctuations ..etc to their values
-
-    separated into two dictionaries to ma
+    :return: dictionary
     '''
     with open(file_path, 'r') as file:
         file_lines = file.readlines()
-    file.close()
+        file.close()
     keywords_list = []
     punc_list = []
+    definitions_list = []
     keywords_regex = re.compile(r"\{.*\}")
     punc_regex = re.compile(r"\[.*\]")
+    definitions_regex = re.compile(r"([a-z]|[A-Z])*[ \t]*=.+")
     for line in file_lines:
         if keywords_regex.match(line) is not None:
             keywords_list.extend([ k for k in line[1:-2].split(' ') if k != ''])
@@ -74,9 +66,13 @@ def read_input(file_path):
                     punc_list.append(element[1:])
                 else:
                     punc_list.append(element)
+        elif definitions_regex.match(line) is not None:
+            definitions_list.append(Definition(line))
     return {
     "keywords": keywords_list,
-    "punctuation": punc_list
+    "punctuation": punc_list,
+    "definitions": definitions_list,
+    "expressions": []
     }
 
 # now we have the regex
