@@ -1,26 +1,35 @@
-
+from NodeGenerator import NodeGenerator
 from node import *
 import queue
-# helper class for NFAs
 
+# this class represents a single NFA that has a start node and maybe 0 or more accept (finish) nodes
 
-class Edge:
-    def __init__(self,to,val):
-        self.to = to
-        self.val = val
-
-# this class represents a single nfa
 class Graph:
 
-    def __init__(self , start , finish,name=""):
-        self.start = start
-        self.finish = finish
-        self.name = name
-        self.start.isStart = True
-        for i in self.finish:
-            i.isFinish = True
+    def __init__(self , char, node_generator, start = None, finish = None):
+        # constructor makes a simple start node and accept state connected by an edge
+        if(start == None):
+            self.start_node = node_generator.make_node(isStart = True)
+            self.accept_state = node_generator.make_node(isFinish = True)
+            self.start_node.add_destination_node(char, self.accept_state)
+            self.all_accept_states=[]
 
-    def bfs(self): # returns list of finishes
+        else: # make custom non-simple graphs (like ones after operations)
+            self.start_node = start
+            self.accept_state = finish
+            self.start_node.add_destination_node(char, self.accept_state)
+            self.all_accept_states = []
+
+    def get_start(self):
+        return self.start_node
+
+    def get_all_accept(self):
+        return self.all_accept_states
+
+    def get_accept(self):
+        return self.accept_state
+
+    def bfs(self): # returns list of finishes (accept states)
         q = queue.Queue()
         q.put(self.start)
         finishes = []
@@ -56,7 +65,12 @@ class Graph:
         return None
 
     @staticmethod
-    def keenClosure(graphs):
+    def keenClosure(graph):
+        """
+        uses the kleen closure operator on a graph to produce a new graph using thompson algorithm
+        :param graph: a graph
+        :return:
+        """
 
         return None
 
@@ -64,18 +78,18 @@ class Graph:
     def keenClosurePlus(graphs):
 
         return None
-
-if __name__ == '__main__':
-    # just messin around
-    a = Node()
-    c = Node()
-    b = Node()
-    d = Node()
-    a.addEdge(c,"hamada")
-    a.addEdge(d,"adel")
-    c.addEdge(b,"rewesh")
-    d.addEdge(b,"not rewesh")
-    g = Graph(a,[b])
-    g.bfs()
-    g.dfs()
-
+#
+# if __name__ == '__main__':
+#     # just messin around
+#     a = Node(1)
+#     c = Node(1)
+#     b = Node(1)
+#     d = Node(1)
+#     a.add_edge(c,"hamada")
+#     a.add_edge(d,"adel")
+#     c.add_edge(b,"rewesh")
+#     d.add_edge(b,"not rewesh")
+#     g = Graph(a,[b])
+#     g.bfs()
+#     g.dfs()
+#

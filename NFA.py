@@ -17,10 +17,29 @@ definitions = ["letter" , "digit" , "digits" ]
 
 #input is 1. list of definitions as strings
 #         2. list of regex as strings
-def convertRegexToNFA(regex):
+def convert_regex_to_nfa(regex , rest):
+    '''
+    convert regex input string to nfa
+
+    :param regex: regex in string format
+    rest: dictionary mapping keywords to values
+    :return: nfa graph object
+    '''
 
     return
 
+def definitions_to_nfa(rest):
+    '''
+    TODO Louay
+    a function mapping regular definitions, punctuations, keywords and anything other than regex to nfa
+    :param rest:
+    :return: nfa graph object
+    '''
+    return
+
+def combine_nfas(nfa_list):
+    combined = None
+    return combined
 
 def priority(c):
     if c == '(':
