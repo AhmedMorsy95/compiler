@@ -1,5 +1,4 @@
 import re
-from .definition import Definition
 # Lexical Rules Input File Format
 # • Lexical rules input file is a text file.
 # • Regular definitions are lines in the form LHS = RHS
@@ -67,7 +66,7 @@ def read_input(file_path):
                 else:
                     punc_list.append(element)
         elif definitions_regex.match(line) is not None:
-            definitions_list.append(Definition(line))
+            definitions_list.append(line)
     return {
     "keywords": keywords_list,
     "punctuation": punc_list,
