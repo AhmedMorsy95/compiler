@@ -1,5 +1,3 @@
-from graph import Edge
-
 class Node:
     def __init__(self, id, isStart= False, isFinish= False, isDead= False):
         self.edges = []
@@ -15,6 +13,7 @@ class Node:
 
     def add_destination_node(self, char, destination):
         self.move_chars.append(char)
+        self.edges.append((destination,char))
         if ( char in self.move_destinations.keys() ):
             value = self.move_destinations[char]
             value.append(destination)
@@ -25,6 +24,11 @@ class Node:
 
     def add_edge(self, to, val):
         self.edges.append((to, val))
+
+    def clearEdges(self):
+        self.edges = []
+        self.move_destinations = {}
+
 
 
 

@@ -29,6 +29,7 @@ class Graph:
     def get_accept(self):
         return self.accept_state
 
+    # needs modification
     def bfs(self): # returns list of finishes (accept states)
         q = queue.Queue()
         q.put(self.start)
@@ -43,21 +44,33 @@ class Graph:
                 print(i[1])
         return finishes
 
+    # needs modification
     def go(self,cur,s):
         if cur.isFinish:
             print(s)
             return
         for i in cur.edges:
-            self.go(i[0],s+i[1])
+            z = s
+            z.append(i[1])
+            self.go(i[0],z)
+            z.pop()
 
+    # needs modification
     def dfs(self): # displaying all patterns in nfa
         print("dfs starts\n")
-        self.go(self.start,"")
+        self.go(self.start_node,[])
 
     @staticmethod
     def mergeOr(graphs):
-
-        return None
+        n = NodeGenerator()
+        g = Graph("epsilon",n)
+        g.start_node.clearEdges()
+        for i in graphs:
+            g.start_node.add_destination_node("epsilon",i.start_node)
+            i.start_node.isStart = 0
+            i.accept_state.add_destination_node("epsilon",g.accept_state)
+            i.accept_state.isFinish = 0
+        return g
 
     @staticmethod
     def mergeConcatenate(graphs):
