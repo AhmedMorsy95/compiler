@@ -93,13 +93,31 @@ class Graph:
 
     @staticmethod
     def keenClosure(graph):
-   
+        """
+        uses the kleen closure operator on a graph to produce a new graph using thompson algorithm
+        :param graph: a graph
+        :return:
+        """
+        n = NodeGenerator.getInstance()
+        g = Graph("@")
+        # g.start_node.clearEdges()
+        # repeat more than once
+        graph.accept_state.add_destination_node("@", graph.start_node)
+        # add new finish with edge epsilon
+        graph.accept_state.add_destination_node("@", g.accept_state)
+        graph.accept_state.isFinish = 0
+        # add new start
+        g.start_node.add_destination_node("@", graph.start_node)
+        graph.start_node.isStart = 0
+        # repeat zero times
         return g
 
     @staticmethod
     def keenClosurePlus(graphs):
-
-        return None
+       graph = []
+       graph.append(graphs)
+       graph.append(keenClosure(graphs))
+       return mergeConcatenate(graph)
 #
 # if __name__ == '__main__':
 #     # just messin around
