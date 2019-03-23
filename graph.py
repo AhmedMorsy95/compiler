@@ -6,8 +6,9 @@ import queue
 
 class Graph:
 
-    def __init__(self , char, node_generator, start = None, finish = None):
+    def __init__(self , char, start = None, finish = None):
         # constructor makes a simple start node and accept state connected by an edge
+        node_generator = NodeGenerator.getInstance()
         if(start == None):
             self.start_node = node_generator.make_node(isStart = True)
             self.accept_state = node_generator.make_node(isFinish = True)
@@ -50,7 +51,7 @@ class Graph:
             return
         for i in cur.edges:
             z = s
-            z.append(i[1])
+            z.append([i[1],[i for i in i[0].names]])
             self.go(i[0],z)
             z.pop()
 
@@ -60,13 +61,12 @@ class Graph:
 
     @staticmethod
     def mergeOr(graphs):
-        n = NodeGenerator()
-        g = Graph("epsilon",n)
+        g = Graph("@")
         g.start_node.clearEdges()
         for i in graphs:
-            g.start_node.add_destination_node("epsilon",i.start_node)
+            g.start_node.add_destination_node("@",i.start_node)
             i.start_node.isStart = 0
-            i.accept_state.add_destination_node("epsilon",g.accept_state)
+            i.accept_state.add_destination_node("@",g.accept_state)
             i.accept_state.isFinish = 0
         return g
 
@@ -74,7 +74,7 @@ class Graph:
     def mergeConcatenate(graphs):
         a = graphs[0]
         b = graphs[1]
-        a.accept_state.add_destination_node("epsilon",b.start_node)
+        a.accept_state.add_destination_node("@",b.start_node)
         a.accept_state.isFinish = 0
         a.accept_state = b.accept_state
         return a

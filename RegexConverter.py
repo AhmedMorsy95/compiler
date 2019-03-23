@@ -112,8 +112,14 @@ class regexConverter:
 
     # any \reserved symbol is treated as a definition
     #definitions = [] # should include definitions from
+    def addLabel(self, cur, s):
+        cur.names.add(s)
+        if cur.isFinish:
+            return
+        for i in cur.edges:
+            self.addLabel(i[0], s)
 
-    def convertRegex(self,regex,regexName):
+    def convertRegex(self,regex,regexName=None):
         symbols = self.getSymbols()
         definitions = self.getDefinitions()
         # add symbols preceded with \
@@ -125,7 +131,11 @@ class regexConverter:
         expression = self.separateItems(regex)
         expression = self.addConcatenation(expression)
         expression = self.infixToPostfix(expression)
-        return self.evaluatePostfix(expression)
+        ret =  self.evaluatePostfix(expression)
+        if regexName != None :
+            self.addLabel(ret.start_node,regexName)
+
+        return ret
 
     def makeNFA(self,c):
         g = Graph(c)
@@ -145,7 +155,7 @@ class regexConverter:
 
     def evaluatePostfix(self,expression):
         stack = []
-        print(expression)
+        #print(expression)
         for i in expression:
             if self.isOperator(i):
                 if i == "*" or i == "+" :
@@ -168,7 +178,8 @@ class regexConverter:
 if __name__ == '__main__':
     x = regexConverter()
     x.addSymbol("L")
-    g = x.convertRegex("(a|b|c|\L)Y","")
+    g = x.convertRegex("ab|ad","alpha")
+    print("this regex corresponds to")
     g.dfs()
 
 
