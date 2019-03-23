@@ -41,17 +41,15 @@ class NodeGenerator:
         self.all_nodes.append(n)
         return n
 
-
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # just messing around
-    # ng = NodeGenerator.getInstance()
-    # n2 = NodeGenerator.getInstance()
-    # print(n2.id)
+    #ng = NodeGenerator.getInstance()
     # n3 = NodeGenerator.getInstance()
-    # # n1 = ng.make_node()
+    # n1 = ng.make_node()
     # n2 = ng.make_node()
     # n3 = ng.make_node()
-    # # test having multiple destinations for one key
+    #
+    # test having multiple destinations for one key
     # n2.add_destination_node("character" , n1.id)
     # n2.add_destination_node("character", n3.id)
     #

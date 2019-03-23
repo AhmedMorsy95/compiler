@@ -112,12 +112,17 @@ class regexConverter:
 
     # any \reserved symbol is treated as a definition
     #definitions = [] # should include definitions from
-    def addLabel(self, cur, s):
+    def addLabel(self, cur, s , visited = []):
+        if visited.count(cur):
+            return
+        visited.append(cur)
         cur.names.add(s)
         if cur.isFinish:
             return
         for i in cur.edges:
             self.addLabel(i[0], s)
+
+        visited.pop()
 
     def convertRegex(self,regex,regexName=None):
         symbols = self.getSymbols()
@@ -160,6 +165,7 @@ class regexConverter:
             if self.isOperator(i):
                 if i == "*" or i == "+" :
                     cur = stack.pop()
+                    stack.append(Graph.keenClosure(cur))
 
                 else: # | or $
                     a = stack.pop()
@@ -178,8 +184,7 @@ class regexConverter:
 if __name__ == '__main__':
     x = regexConverter()
     x.addSymbol("L")
-    g = x.convertRegex("ab|ad","alpha")
-    print("this regex corresponds to")
+    g = x.convertRegex("a|b*","alpha")
     g.dfs()
 
 
