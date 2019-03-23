@@ -44,10 +44,11 @@ class NodeGenerator:
 
 if __name__ == '__main__':
     # just messing around
-    ng = NodeGenerator.getInstance()
-    n2 = NodeGenerator.getInstance()    print(n2.id)
-    n3 = NodeGenerator.getInstance()
-    # n1 = ng.make_node()
+    # ng = NodeGenerator.getInstance()
+    # n2 = NodeGenerator.getInstance()
+    # print(n2.id)
+    # n3 = NodeGenerator.getInstance()
+    # # n1 = ng.make_node()
     # n2 = ng.make_node()
     # n3 = ng.make_node()
     # # test having multiple destinations for one key

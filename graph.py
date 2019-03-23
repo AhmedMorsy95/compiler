@@ -68,6 +68,9 @@ class Graph:
             i.start_node.isStart = 0
             i.accept_state.add_destination_node("@",g.accept_state)
             i.accept_state.isFinish = 0
+            for j in i.start_node.names:
+                g.start_node.names.add(j)
+                g.accept_state.names.add(j)
         return g
 
     @staticmethod
