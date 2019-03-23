@@ -45,15 +45,24 @@ class Graph:
                 print(i[1])
         return finishes
 
-    def go(self,cur,s):
+    def go(self,cur,s,visited = []):
+
         if cur.isFinish:
             print(s)
             return
+
+        if visited.count(cur.id):
+            return
+        visited.append(cur.id)
+
+
         for i in cur.edges:
             z = s
             z.append([i[1],[i for i in i[0].names]])
             self.go(i[0],z)
             z.pop()
+
+        visited.pop()
 
     def dfs(self): # displaying all patterns in nfa
         print("dfs starts\n")
@@ -84,13 +93,8 @@ class Graph:
 
     @staticmethod
     def keenClosure(graph):
-        """
-        uses the kleen closure operator on a graph to produce a new graph using thompson algorithm
-        :param graph: a graph
-        :return:
-        """
-
-        return None
+   
+        return g
 
     @staticmethod
     def keenClosurePlus(graphs):
