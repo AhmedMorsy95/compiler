@@ -44,7 +44,6 @@ class Graph:
                 print(i[1])
         return finishes
 
-    # needs modification
     def go(self,cur,s):
         if cur.isFinish:
             print(s)
@@ -55,7 +54,6 @@ class Graph:
             self.go(i[0],z)
             z.pop()
 
-    # needs modification
     def dfs(self): # displaying all patterns in nfa
         print("dfs starts\n")
         self.go(self.start_node,[])
@@ -74,8 +72,12 @@ class Graph:
 
     @staticmethod
     def mergeConcatenate(graphs):
-
-        return None
+        a = graphs[0]
+        b = graphs[1]
+        a.accept_state.add_destination_node("epsilon",b.start_node)
+        a.accept_state.isFinish = 0
+        a.accept_state = b.accept_state
+        return a
 
     @staticmethod
     def keenClosure(graph):
