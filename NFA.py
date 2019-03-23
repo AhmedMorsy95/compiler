@@ -12,7 +12,7 @@
 # example a+b* becomes [a,b,*,+] where a and b are instances of class graph
 # * or + are unary operations which means they must come after first operator
 
-
+from graph import Graph
 from RegexConverter import regexConverter
 #input is 1. list of definitions as strings
 #         2. list of regex as strings
@@ -24,12 +24,19 @@ def convert_regex_to_nfa(regex , rest):
     rest: dictionary mapping keywords to values
     :return: nfa graph object
     '''
-    x = RegexConverter()
-    reservedSymbols = ["+", "-", "*", "/", "=", ",", "{", "}", "(", ")", ",", ";", "\\"]
+
+    # add symbols in the language & \L
+    # for each regex send it with its name
+    x = regexConverter()
+    reservedSymbols = ["+", "-", "*", "/", "=", ",", "{", "}", "(", ")", ",", ";", "\\","\L"]
     for i in reservedSymbols:
         x.addSymbol(i)
 
-    return None
+    all = []
+
+    for i in regex:
+        all.append(x.convertRegex(i[0],i[1]))
+    return all
 
 def definitions_to_nfa(rest):
     '''
@@ -41,12 +48,17 @@ def definitions_to_nfa(rest):
     return
 
 def combine_nfas(nfa_list):
-    combined = None
+    combined = Graph.mergeOr(nfa_list)
     return combined
 
 
 
 if __name__ == '__main__':
     # testing
-    # print(addConcatenation("a|(b*c)+"))
-    # print(infixToPostfix(addConcatenation("a|(b*c)+")))
+    regex = [("abc","alpha"),("123","numerical"),("@","epsilon")]
+    nfas = convert_regex_to_nfa(regex,"")
+    for i in nfas:
+        i.dfs()
+        print("\n")
+    combined = combine_nfas(nfas)
+    combined.dfs()
