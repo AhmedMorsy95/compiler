@@ -64,6 +64,9 @@ class regexConverter:
                     mx = j+1
 
             cur.append(s[i:mx])
+            if cur[-1] == "\L":
+                cur.pop()
+                cur.append("@")
             i = mx
         return cur
 
@@ -110,7 +113,7 @@ class regexConverter:
     # any \reserved symbol is treated as a definition
     #definitions = [] # should include definitions from
 
-    def convertRegex(self,regex):
+    def convertRegex(self,regex,regexName):
         symbols = self.getSymbols()
         definitions = self.getDefinitions()
         # add symbols preceded with \
@@ -125,8 +128,7 @@ class regexConverter:
         return self.evaluatePostfix(expression)
 
     def makeNFA(self,c):
-        n = NodeGenerator()
-        g = Graph(c,n)
+        g = Graph(c)
         return g
 
 
@@ -154,7 +156,7 @@ class regexConverter:
                     b = stack.pop()
 
                     if i == '$':
-                        return None
+                        stack.append(Graph.mergeConcatenate([b,a]))
                     else:
                         stack.append(Graph.mergeOr([a,b]))
 
@@ -165,8 +167,8 @@ class regexConverter:
 # for testing
 if __name__ == '__main__':
     x = regexConverter()
-    x.addSymbol("+")
-    g = x.convertRegex("a|b|c|\+")
+    x.addSymbol("L")
+    g = x.convertRegex("(a|b|c|\L)Y","")
     g.dfs()
 
 
