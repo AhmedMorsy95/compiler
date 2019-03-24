@@ -14,6 +14,7 @@
 
 from graph import Graph
 from RegexConverter import regexConverter
+from DefinitionConverter import create_def_nfa
 #input is 1. list of definitions as strings
 #         2. list of regex as strings
 def convert_regex_to_nfa(regex , rest):
@@ -38,14 +39,18 @@ def convert_regex_to_nfa(regex , rest):
         all.append(x.convertRegex(i[0],i[1]))
     return all
 
-def definitions_to_nfa(rest):
+def definitions_to_nfa(definitions_dict):
     '''
     TODO Louay
     a function mapping regular definitions, punctuations, keywords and anything other than regex to nfa
     :param rest:
     :return: nfa graph object
     '''
-    return
+    nfa_dict = {}
+    for key, val in definitions_dict.items():
+        nfa_dict[key] = create_def_nfa(val)
+
+    return nfa_dict
 
 def combine_nfas(nfa_list):
     combined = Graph.mergeOr(nfa_list)
