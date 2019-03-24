@@ -1,4 +1,3 @@
 from getInput import read_input
 
-grammar_rules = read_input("grammar.txt")
-print(grammar_rules)
+keywords_list, punc_list, definitions_dict, expressions_dict = read_input("grammar.txt")

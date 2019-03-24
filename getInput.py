@@ -1,5 +1,4 @@
 import re
-from NFA import isOperatorWithRange, infixToPostfix
 # Lexical Rules Input File Format
 # • Lexical rules input file is a text file.
 # • Regular definitions are lines in the form LHS = RHS
@@ -53,9 +52,11 @@ def read_input(file_path):
     keywords_list = []
     punc_list = []
     definitions_dict = {}
+    expressions_dict = {}
     keywords_regex = re.compile(r"\{.*\}")
     punc_regex = re.compile(r"\[.*\]")
     definitions_regex = re.compile(r"([a-z]|[A-Z])*[ \t]*=.+")
+    expressions_regex = re.compile(r"([a-z]|[A-Z])*[ \t]*:.+")
     for line in file_lines:
         if keywords_regex.match(line) is not None:
             keywords_list.extend([ k for k in line[1:-2].split(' ') if k != ''])
@@ -67,30 +68,12 @@ def read_input(file_path):
                 else:
                     punc_list.append(element)
         elif definitions_regex.match(line) is not None:
-            name, nfa = generate_definition_NFA(line)
-            definitions_dict[name] = nfa
+            name = line[0:line.find('=')].strip()
+            value = line[line.find('=')+1:].strip()
+            definitions_dict[name] = value
+        elif expressions_regex.match(line) is not None:
+            name = line[0:line.find(':')].strip()
+            value = line[line.find(':')+1:].strip()
+            expressions_dict[name] = value
 
-    return {
-    "keywords": keywords_list,
-    "punctuation": punc_list,
-    "definitions": definitions_dict,
-    "expressions": []
-    }
-
-def generate_definition_NFA(line):
-    """
-    Definition is in the form of <name> = <regex wih no non-terminal characters>
-    """
-    postfix_regex = infixToPostfix(line, with_range=True)
-    stack = []
-    for c in postfix_regex:
-        if isOperatorWithRange(c):
-            if c in ['-', '|']:
-                y = stack.pop()
-                x = stack.pop()
-                if c == '-':
-
-            else:
-                #do other operation
-        else:
-            stack.append(c)
+    return keywords_list, punc_list, definitions_dict, expressions_dict
