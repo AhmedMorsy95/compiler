@@ -138,7 +138,8 @@ class regexConverter:
         expression = self.infixToPostfix(expression)
         ret =  self.evaluatePostfix(expression)
         if regexName != None :
-            self.addLabel(ret.start_node,regexName)
+            ret.accept_state.names = regexName
+            #self.addLabel(ret.start_node,regexName)
 
         return ret
 

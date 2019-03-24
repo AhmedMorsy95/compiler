@@ -48,7 +48,7 @@ class Graph:
     def go(self,cur,s,visited = []):
 
         if cur.isFinish:
-            print(s)
+            print(s , cur.names,cur.id)
             return
 
         if visited.count(cur.id):
