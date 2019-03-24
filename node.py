@@ -9,7 +9,7 @@ class Node:
         # dictionary with key of next input character and value of corresponding destination(s)
         self.move_destinations = {}
         self.id = id
-        self.names = set()
+        self.names = ""
 
 
     def add_destination_node(self, char, destination):
@@ -30,6 +30,8 @@ class Node:
         self.edges = []
         self.move_destinations = {}
 
+    def transition_nodes(self,char):
+        return None
 
 
 

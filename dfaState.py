@@ -25,7 +25,10 @@ class state:
         state.state_instances.append(self)
         self.destinations = {} # we add in it a pair (char,state number)
         self.id = state.id
+        self.labels = {}
+        self.accept_state = False
         state.id += 1
+
 
     @staticmethod
     def getNodeFromID(id):
@@ -37,6 +40,15 @@ class state:
     def addDestination(self,char,state_to):
             # only 1 state_to for each char, so we dont need a list
             self.destinations[char] = state_to
+
+    def get_transition_state(self,char):
+        return None
+
+    def isAccept(self):
+        return False
+
+    def getLabels(self):
+        return None
 
 
 if __name__ == '__main__':
