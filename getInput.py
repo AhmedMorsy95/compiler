@@ -1,4 +1,5 @@
 import re
+from NFA import isOperatorWithRange, infixToPostfix
 # Lexical Rules Input File Format
 # • Lexical rules input file is a text file.
 # • Regular definitions are lines in the form LHS = RHS
@@ -51,7 +52,7 @@ def read_input(file_path):
         file.close()
     keywords_list = []
     punc_list = []
-    definitions_list = []
+    definitions_dict = {}
     keywords_regex = re.compile(r"\{.*\}")
     punc_regex = re.compile(r"\[.*\]")
     definitions_regex = re.compile(r"([a-z]|[A-Z])*[ \t]*=.+")
@@ -66,12 +67,30 @@ def read_input(file_path):
                 else:
                     punc_list.append(element)
         elif definitions_regex.match(line) is not None:
-            definitions_list.append(line)
+            name, nfa = generate_definition_NFA(line)
+            definitions_dict[name] = nfa
+
     return {
     "keywords": keywords_list,
     "punctuation": punc_list,
-    "definitions": definitions_list,
+    "definitions": definitions_dict,
     "expressions": []
     }
 
-# now we have the regex
+def generate_definition_NFA(line):
+    """
+    Definition is in the form of <name> = <regex wih no non-terminal characters>
+    """
+    postfix_regex = infixToPostfix(line, with_range=True)
+    stack = []
+    for c in postfix_regex:
+        if isOperatorWithRange(c):
+            if c in ['-', '|']:
+                y = stack.pop()
+                x = stack.pop()
+                if c == '-':
+
+            else:
+                #do other operation
+        else:
+            stack.append(c)
