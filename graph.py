@@ -33,7 +33,7 @@ class Graph:
     # needs modification
     def bfs(self): # returns list of finishes (accept states)
         q = queue.Queue()
-        q.put(self.start)
+        q.put(self.start_node)
         finishes = []
         print("bfs starts\n")
         while not q.empty():
