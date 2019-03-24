@@ -28,7 +28,7 @@ class state:
         state.id += 1
 
     @staticmethod
-    def getNodeFromID(self,id):
+    def getNodeFromID(id):
         return state.state_instances[id]
 
     def getStateNodes(self):
@@ -46,5 +46,5 @@ if __name__ == '__main__':
     c = x.make_node()
 
     y = state.getState([a,b])
-    z = state.getState([a,c])
-    print(z.getStateNodes())
+    z = state.getState([a,b])
+    print(y,z)
