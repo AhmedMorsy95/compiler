@@ -1,4 +1,5 @@
 import queue
+
 class Node:
     def __init__(self, id, isStart= False, isFinish= False, isDead= False):
         self.edges = []
