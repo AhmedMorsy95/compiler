@@ -116,8 +116,8 @@ class Graph:
     def keenClosurePlus(graphs):
        graph = []
        graph.append(graphs)
-       graph.append(keenClosure(graphs))
-       return mergeConcatenate(graph)
+       graph.append(Graph.keenClosure(graphs))
+       return Graph.mergeConcatenate(graph)
 #
 # if __name__ == '__main__':
 #     # just messin around

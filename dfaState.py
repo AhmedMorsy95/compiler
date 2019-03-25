@@ -73,17 +73,17 @@ class state:
 
         return lbls
     def dfs_test(self,cur,visited,path):
-        if cur.isAccept():
-            print(path)
         if visited.count(cur):
             return
-        else:
-            visited.append(cur)
-            for key, value in cur.destinations.items():
-                path.append(key)
-                self.dfs_test(value,visited,path)
-                path.pop()
-            visited.pop()
+        if cur.isAccept():
+            print(path)
+
+        visited.append(cur)
+        for key, value in cur.destinations.items():
+            path.append(key)
+            self.dfs_test(value,visited,path)
+            path.pop()
+        visited.pop()
 
     def dfs_state(self):
         visited = []

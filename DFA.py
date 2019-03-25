@@ -9,7 +9,7 @@ class DFA:
 
 
 def nfa_to_dfa(nfa):
-    symbols_list = ['a','b','c','d','e','f']
+    symbols_list = ['a','b','m','e','r','n','c']
     start_node = nfa.start_node
     start_state = state.getState(start_node.transition_nodes('@'))
     transition_table ={}

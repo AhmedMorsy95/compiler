@@ -34,6 +34,9 @@ class Node:
 
     def transition_nodes(self,char):
         ret = []
+        if char == '@':
+            ret.append(self)
+
         q = queue.Queue()
         if (char in self.move_destinations.keys()):
 

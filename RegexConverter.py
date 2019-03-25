@@ -76,11 +76,11 @@ class regexConverter:
         ret = [cur[0]]
         # add $ if it's required
         for i in range(1,len(cur)):
-            if  self.isOperator(ret[-1]) and self.isOperator(cur[i]):
-                ret.append('$')
-            elif cur[i] == '(' and ret[-1] != '|':
-                ret.append('$')
-            elif ret[-1] == ')' and self.isOperator(cur[i]) == 0 :
+            # if  self.isOperator(ret[-1]) and self.isOperator(cur[i]):
+            #     ret.append('$')
+            # if cur[i] == '(' and ret[-1] != '|':
+            #     ret.append('$')
+            if ret[-1] == ')' and self.isOperator(cur[i]) == 0 :
                 ret.append('$')
             elif self.isOperatorOrBracket(ret[-1]) == 0 and self.isOperatorOrBracket(cur[i]) == 0:
                 ret.append('$')
@@ -162,7 +162,7 @@ class regexConverter:
 
     def evaluatePostfix(self,expression):
         stack = []
-        #print(expression)
+        print(expression)
         for i in expression:
             if self.isOperator(i):
                 if i == "*" or i == "+" :
@@ -190,7 +190,8 @@ class regexConverter:
 if __name__ == '__main__':
     x = regexConverter()
     x.addSymbol("L")
-    g = x.convertRegex("ab|abb","alpha")
+    g = x.convertRegex("((a)*|(b)*)(c|m)","alpha")
     g.dfs()
     dfa = DFA.nfa_to_dfa(g)
     dfa.dfs_state()
+    print(dfa.destinations)
