@@ -1,3 +1,5 @@
+import queue
+
 class Node:
     def __init__(self, id, isStart= False, isFinish= False, isDead= False):
         self.edges = []
@@ -31,7 +33,23 @@ class Node:
         self.move_destinations = {}
 
     def transition_nodes(self,char):
-        return None
+        ret = []
+        q = queue.Queue()
+        if (char in self.move_destinations.keys()):
+
+            for i in self.move_destinations[char]:
+                q.put(i)
+
+        char = "@"
+        while not q.empty():
+            cur = q.get()
+            ret.append(cur)
+            if ( char in cur.move_destinations.keys() ):
+                list = cur.move_destinations[char]
+                for i in list:
+                    q.put(i)
+
+        return ret
 
 
 
