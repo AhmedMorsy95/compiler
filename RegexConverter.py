@@ -1,6 +1,7 @@
 # need to provide it with definitions
 from NodeGenerator import NodeGenerator
 from graph import *
+import DFA
 class regexConverter:
 
     def __init__(self):
@@ -165,8 +166,12 @@ class regexConverter:
         for i in expression:
             if self.isOperator(i):
                 if i == "*" or i == "+" :
-                    cur = stack.pop()
-                    stack.append(Graph.keenClosure(cur))
+                    if i == "*":
+                        cur = stack.pop()
+                        stack.append(Graph.keenClosure(cur))
+                    else:
+                        cur = stack.pop()
+                        stack.append(Graph.keenClosurePlus(cur))
 
                 else: # | or $
                     a = stack.pop()
@@ -185,7 +190,7 @@ class regexConverter:
 if __name__ == '__main__':
     x = regexConverter()
     x.addSymbol("L")
-    g = x.convertRegex("a|b*","alpha")
+    g = x.convertRegex("ab|abb","alpha")
     g.dfs()
-
-
+    dfa = DFA.nfa_to_dfa(g)
+    dfa.dfs_state()
