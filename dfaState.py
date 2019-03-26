@@ -55,6 +55,12 @@ class state:
 
         return state.getState(my_nodes)
 
+    def is_dead(self):
+        nodes = self.get_state_nodes()
+        if len(nodes) == 0:
+            return True
+        return False
+
     def isAccept(self):
         nodes = self.get_state_nodes()
 
@@ -68,15 +74,15 @@ class state:
         lbls = []
         nodes = self.get_state_nodes()
         for i in nodes:
-            if i.name != "" and lbls.count(i.name) == False:
-                lbls.append(i.name)
+            if i.names != "" and lbls.count(i.names) == False:
+                lbls.append(i.names)
 
         return lbls
     def dfs_test(self,cur,visited,path):
         if visited.count(cur):
             return
         if cur.isAccept():
-            print(path)
+            print(path , cur.getLabels())
 
         visited.append(cur)
         for key, value in cur.destinations.items():
