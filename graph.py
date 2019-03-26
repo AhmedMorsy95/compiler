@@ -1,7 +1,7 @@
 from NodeGenerator import NodeGenerator
 from node import *
 import queue
-
+import copy
 # this class represents a single NFA that has a start node and maybe 0 or more accept (finish) nodes
 
 class Graph:
@@ -92,6 +92,10 @@ class Graph:
         a.accept_state.isFinish = 0
         a.accept_state = b.accept_state
         return a
+
+    @staticmethod
+    def gClone(graph):
+        return copy.deepcopy(graph)
 
     @staticmethod
     def keenClosure(graph):
