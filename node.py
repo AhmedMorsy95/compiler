@@ -16,7 +16,7 @@ class Node:
 
     def add_destination_node(self, char, destination):
         self.move_chars.append(char)
-        self.edges.append((destination,char))
+        self.edges.append((destination, char))
         if ( char in self.move_destinations.keys() ):
             value = self.move_destinations[char]
             value.append(destination)

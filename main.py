@@ -10,7 +10,7 @@ import DFA
 from NodeGenerator import  NodeGenerator
 
 
-def go(regex,definitions):
+def go(regex, definitions):
     # regex = [("(abc)*", "alpha"), ("123", "numerical")]
     #1. convert regex into nfa
     nfas = NFA.convert_regex_to_nfa(regex, definitions)
@@ -39,13 +39,13 @@ if __name__ == '__main__':
 
     regex_all = []
     for i in keywords_list:
-        regex_all.append((i.replace(" ",""),i))
+        regex_all.append((i.replace(" ", ""), i))
 
     for i in punc_list:
-        regex_all.append((i.replace(" ",""),i))
+        regex_all.append((i.replace(" ", ""),  i))
 
-    for key,values in expressions_dict.items():
-        regex_all.append((values.replace(" ",""),key))
+    for key, values in expressions_dict.items():
+        regex_all.append((values.replace(" ", ""), key))
 
-    go(regex_all,definitions_nfas)
+    go(regex_all, definitions_nfas)
 
