@@ -7,6 +7,7 @@ class regexConverter:
     def __init__(self):
         self.definitions = []
         self.symbols = []
+        self.definitions_nfas = {}
 
     def getSymbols(self):
         return self.symbols
@@ -24,6 +25,7 @@ class regexConverter:
     def infixToPostfix(self,s):
         expression = []
         stack = []
+        #print(s)
         for i in s:
             if self.isOperator(i):
                 if i == '*' or i == '+':
@@ -78,8 +80,8 @@ class regexConverter:
         for i in range(1,len(cur)):
             # if  self.isOperator(ret[-1]) and self.isOperator(cur[i]):
             #     ret.append('$')
-            # if cur[i] == '(' and ret[-1] != '|':
-            #     ret.append('$')
+            if cur[i] == '(' and ret[-1] != '|':
+                 ret.append('$')
             if ret[-1] == ')' and self.isOperator(cur[i]) == 0 :
                 ret.append('$')
             elif self.isOperatorOrBracket(ret[-1]) == 0 and self.isOperatorOrBracket(cur[i]) == 0:
@@ -152,7 +154,7 @@ class regexConverter:
     def getNFA(self,expression):  # expression is a string
 
         if self.definitions.count(expression):
-            return None
+            return self.definitions_nfas.get(expression)
 
         if self.symbols.count(expression):
             return self.makeNFA(expression[1:]) # skip the escape character
@@ -162,7 +164,7 @@ class regexConverter:
 
     def evaluatePostfix(self,expression):
         stack = []
-        print(expression)
+        #print(expression)
         for i in expression:
             if self.isOperator(i):
                 if i == "*" or i == "+" :
@@ -184,14 +186,16 @@ class regexConverter:
 
             else:
                 stack.append(self.getNFA(i))
+
         return stack.pop()
 
 # for testing
 if __name__ == '__main__':
+
     x = regexConverter()
-    x.addSymbol("L")
-    g = x.convertRegex("((a)*|(b)*)(c|m)","alpha")
-    g.dfs()
-    dfa = DFA.nfa_to_dfa(g)
-    dfa.dfs_state()
-    print(dfa.destinations)
+    # x.addSymbol("L")
+    # g = x.convertRegex("((a)*|(b)*)(c|m)","alpha")
+    # g.dfs()
+    # dfa = DFA.nfa_to_dfa(g)
+    # dfa.dfs_state()
+    # print(dfa.destinations)
