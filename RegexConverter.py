@@ -127,7 +127,7 @@ class regexConverter:
 
         visited.pop()
 
-    def convertRegex(self,regex,regexName=None):
+    def convertRegex(self, regex, regexName=None):
         symbols = self.getSymbols()
         definitions = self.getDefinitions()
         # add symbols preceded with \
@@ -154,6 +154,7 @@ class regexConverter:
     def getNFA(self,expression):  # expression is a string
 
         if self.definitions.count(expression):
+            self.definitions_nfas=Graph.dgClone(self.definitions_nfas)
             return self.definitions_nfas.get(expression)
 
         if self.symbols.count(expression):

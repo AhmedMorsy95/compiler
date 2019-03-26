@@ -31,11 +31,12 @@ def convert_regex_to_nfa(regex , definitions):
     # add symbols in the language & \L
     # for each regex send it with its name
     x = regexConverter()
+    def_clone={}
     x.definitions_nfas = definitions
-    for key,values in definitions.items():
+    for key, value in definitions.items():
         x.addDefinition(key)
 
-    reserved_symbols = ["+", "*", "(", ")","\L","="]
+    reserved_symbols = ["+", "*", "(", ")", "\L", "="]
     for i in reserved_symbols:
         x.addSymbol(i)
 
@@ -71,8 +72,9 @@ def definitions_to_nfa(definitions_dict):
     return nfa_dict
 
 def combine_nfas(nfa_list):
-    nfa_clone=[Graph.gClone(g) for g in nfa_list]
-    combined = Graph.mergeOr(nfa_list)
+    #nfa_clone=[Graph.gClone(g) for g in nfa_list]
+    nfa_clone=nfa_list
+    combined = Graph.mergeOr(nfa_clone)
     return combined
 
 

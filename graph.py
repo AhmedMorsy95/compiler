@@ -98,6 +98,12 @@ class Graph:
         return copy.deepcopy(graph)
 
     @staticmethod
+    def dgClone(dic_graphs):
+        dic_g ={}
+        for key, value in dic_graphs.items():
+            dic_g[key]= Graph.gClone(value)
+        return dic_g
+    @staticmethod
     def keenClosure(graph):
         """
         uses the kleen closure operator on a graph to produce a new graph using thompson algorithm

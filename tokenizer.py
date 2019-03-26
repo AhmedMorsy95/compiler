@@ -5,7 +5,7 @@ def tokenize(dfa,input = ""):
     i = 0
     while i < len(input):
         stack = [dfa]
-        for j in range(i,len(input)):
+        for j in range(i, len(input)):
             cur_state = stack[-1]
             next_state = cur_state.get_transition_state(input[j])
             if next_state.is_dead():

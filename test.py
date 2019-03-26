@@ -55,9 +55,11 @@ print(nfas[1].dfs())
 print("digits+")
 print(nfas[11])
 print(nfas[11].dfs())
-
+#test copying
 import copy
 x=Graph("a")
 y=copy.deepcopy(x)
-
+print(x,y)
+print(x.start_node, y.start_node)
+print(x.start_node.move_chars, y.start_node.move_chars)
 print(x.dfs(),y.dfs())
