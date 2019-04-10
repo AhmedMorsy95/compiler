@@ -56,6 +56,18 @@ def minimization_states():
             flag=1
         dic.clear()
 
+def connect_graph():
+    for ins in min_state.class_instance:
+        node= ins.nodes_of_this_class[0]
+        for symbol in symbols_list:
+            ins.add_destination(symbol,min_state.map_state_to_class[node.get_transition_state(symbol)])
+
+        for nodes in ins.nodes_of_this_class:
+            if nodes.isAccept() == True :
+                ins.accept_state= True
+                break
+
+
 
 
 

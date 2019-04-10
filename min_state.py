@@ -4,9 +4,11 @@ class min_state:
     id = 0
     class_instance = []
     map_state_to_class = {} #{state,id}
+    destination ={}
+    accept_state = False
 
     def __init__(self, states):
-        self.nodes_of_this_class = states.copy()
+        self.nodes_of_this_class = sorted(states.copy())
         self.id = min_state.id
         min_state.id +=1
         min_state.class_instance.append(self)
@@ -29,7 +31,7 @@ class min_state:
 
     def is_same(state1,state2,symbols):
         for s in symbols:
-           if min_state.map_state_to_class[state1.get_transition_state] == min_state.map_state_to_class[state2.get_transition_state]:
+           if min_state.map_state_to_class[state1.get_transition_state(s)] == min_state.map_state_to_class[state2.get_transition_state(s)]:
                continue
            else:
                return False
@@ -37,5 +39,7 @@ class min_state:
 
 
 
-
+    def add_destination(self,char,class_to):
+            # only 1 state_to for each char, so we dont need a list
+            self.destinations[char] = class_to
 
