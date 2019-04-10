@@ -1,8 +1,15 @@
 from dfaState import  state
 from min_state import  min_state
+from NodeGenerator import NodeGenerator
 import queue
+from string import ascii_letters
 
-symbols_list = ['a', 'b', 'm', 'e', 'r', 'n', 'c']
+symbols_list = []
+for char in ascii_letters:
+    symbols_list.append(char)
+for i in range(0,9):
+    symbols_list.append(str(i))
+
 no=0
 dic ={} # for mappinhg same state
 def check(c):
@@ -19,8 +26,8 @@ def check(c):
 def minimization_states():
     initial_accepted_state=[]
     initial_unaccepted_state=[]
-    number_of_states = len(state.state_Nodes)
-    for s in state.state_Nodes:
+    number_of_states = len(state.state_instances)
+    for s in state.state_instances:
         if s.isAccept():
             initial_accepted_state.append(s)
         else:
@@ -56,7 +63,6 @@ def minimization_states():
             flag=1
         dic.clear()
 
-def connect_graph():
     for ins in min_state.class_instance:
         node= ins.nodes_of_this_class[0]
         for symbol in symbols_list:
@@ -69,5 +75,18 @@ def connect_graph():
 
 
 
+
+if __name__ == '__main__':
+    x = NodeGenerator.getInstance()
+    a = x.make_node()
+    b = x.make_node()
+    c = x.make_node()
+
+    y = state.getState([a,b])
+    z = state.getState([a,b])
+    minimization_states()
+    print(len(min_state.class_instance))
+
+    print(y,z)
 
 

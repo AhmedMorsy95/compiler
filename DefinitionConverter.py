@@ -1,6 +1,5 @@
 from string import ascii_lowercase, ascii_uppercase, digits
 from graph import Graph
-
 operators = ['*','+','|']
 
 def priority(c):

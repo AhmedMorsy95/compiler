@@ -15,9 +15,11 @@
 from graph import Graph
 from RegexConverter import regexConverter
 from DefinitionConverter import create_def_nfa
+import DFA
+import tokenizer
 #input is 1. list of definitions as strings
 #         2. list of regex as strings
-def convert_regex_to_nfa(regex , rest):
+def convert_regex_to_nfa(regex , definitions):
     '''
     convert regex input string to nfa
 
@@ -29,15 +31,32 @@ def convert_regex_to_nfa(regex , rest):
     # add symbols in the language & \L
     # for each regex send it with its name
     x = regexConverter()
-    reservedSymbols = ["+", "-", "*", "/", "=", ",", "{", "}", "(", ")", ",", ";", "\\","\L"]
-    for i in reservedSymbols:
+    def_clone={}
+    x.definitions_nfas = definitions
+    for key, value in definitions.items():
+        x.addDefinition(key)
+
+    reserved_symbols = ["+", "*", "(", ")", "\L", "="]
+    for i in reserved_symbols:
         x.addSymbol(i)
 
-    all = []
+    all_nfas = []
 
     for i in regex:
-        all.append(x.convertRegex(i[0],i[1]))
-    return all
+        cur = i[0].replace("\\","")
+        if cur != '(' and cur != ')':
+            all_nfas.append(x.convertRegex(i[0],i[1]))
+
+            #print (i[0])
+            #all_nfas[-1].dfs()
+#    all_nfas.append(Graph())
+    a = Graph('(')
+    a.accept_state.names = "("
+    b = Graph(')')
+    b.accept_state.names = ")"
+    all_nfas.append(a)
+    all_nfas.append(b)
+    return all_nfas
 
 def definitions_to_nfa(definitions_dict):
     '''
@@ -53,17 +72,19 @@ def definitions_to_nfa(definitions_dict):
     return nfa_dict
 
 def combine_nfas(nfa_list):
-    combined = Graph.mergeOr(nfa_list)
+    #nfa_clone=[Graph.gClone(g) for g in nfa_list]
+    nfa_clone=nfa_list
+    combined = Graph.mergeOr(nfa_clone)
     return combined
 
 
 
 if __name__ == '__main__':
     # testing
-    regex = [("abc","alpha"),("123","numerical"),("@","epsilon")]
-    nfas = convert_regex_to_nfa(regex,"")
-    for i in nfas:
-        i.dfs()
-        print("\n")
+    regex = [("(abc)*","alpha"),("123","numerical"),]
+    nfas = convert_regex_to_nfa(regex,{})
     combined = combine_nfas(nfas)
     combined.dfs()
+    dfa = DFA.nfa_to_dfa(combined)
+    dfa.dfs_state()
+    tokenizer.tokenize(dfa,"abcabca123")

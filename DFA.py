@@ -1,5 +1,6 @@
 import queue
 from dfaState import state
+from string import ascii_letters
 class DFA:
     def __init__(self):
         self.accept_states = []
@@ -9,7 +10,12 @@ class DFA:
 
 
 def nfa_to_dfa(nfa):
-    symbols_list = ['a','b','m','e','r','n','c']
+    symbols_list = []
+    for char in ascii_letters:
+        symbols_list.append(char)
+    for i in range(0,9):
+        symbols_list.append(str(i))
+
     start_node = nfa.start_node
     start_state = state.getState(start_node.transition_nodes('@'))
     transition_table ={}

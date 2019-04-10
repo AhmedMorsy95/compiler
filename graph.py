@@ -1,7 +1,7 @@
 from NodeGenerator import NodeGenerator
 from node import *
 import queue
-
+import copy
 # this class represents a single NFA that has a start node and maybe 0 or more accept (finish) nodes
 
 class Graph:
@@ -47,18 +47,20 @@ class Graph:
 
     def go(self,cur,s,visited = []):
 
+       # print(s,cur.names,cur.id)
+        if visited.count(cur.id):
+            return
+
         if cur.isFinish:
             print(s , cur.names,cur.id)
             return
 
-        if visited.count(cur.id):
-            return
         visited.append(cur.id)
 
 
         for i in cur.edges:
             z = s
-            z.append([i[1],[i for i in i[0].names]])
+            z.append([i[1],[i for i in i[0].names],cur.id])
             self.go(i[0],z)
             z.pop()
 
@@ -91,6 +93,16 @@ class Graph:
         a.accept_state = b.accept_state
         return a
 
+    @staticmethod
+    def gClone(graph):
+        return copy.deepcopy(graph)
+
+    @staticmethod
+    def dgClone(dic_graphs):
+        dic_g ={}
+        for key, value in dic_graphs.items():
+            dic_g[key]= Graph.gClone(value)
+        return dic_g
     @staticmethod
     def keenClosure(graph):
         """
