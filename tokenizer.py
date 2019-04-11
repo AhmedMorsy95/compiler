@@ -1,5 +1,5 @@
 from dfaState import state
-def tokenize(dfa,input = ""):
+def tokenize(dfa,input = "",priority = {}):
     # input is a string
 
     i = 0
@@ -17,7 +17,11 @@ def tokenize(dfa,input = ""):
         while len(stack) > 0:
             cur_state = stack.pop()
             if cur_state.isAccept() and len(stack) > 0:
-                print(input[i:i+len(stack)]," -> ",cur_state.getLabels())
+                labels = cur_state.getLabels()
+                for k in range(0,len(labels)):
+                    if priority[labels[k]] < priority[labels[0]]:
+                        labels[0] = labels[k]
+                print(input[i:i+len(stack)]," -> ",labels[0])
                 i += len(stack)
                 break
 

@@ -72,8 +72,9 @@ def definitions_to_nfa(definitions_dict):
     return nfa_dict
 
 def combine_nfas(nfa_list):
-    #nfa_clone=[Graph.gClone(g) for g in nfa_list]
-    nfa_clone=nfa_list
+    nfa_clone=[Graph.gClone(g) for g in nfa_list]
+
+    #nfa_clone=nfa_list
     combined = Graph.mergeOr(nfa_clone)
     return combined
 
