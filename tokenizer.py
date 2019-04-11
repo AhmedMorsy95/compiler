@@ -17,10 +17,11 @@ def tokenize(dfa,input = ""):
         while len(stack) > 0:
             cur_state = stack.pop()
             if cur_state.isAccept() and len(stack) > 0:
-                print(input[i:i+len(stack)]," -> ",cur_state.getLabels())
+                #print(input[i:i+len(stack)]," -> ",cur_state.getLabels())
+                print( cur_state.getLabels()[0])
                 i += len(stack)
                 break
 
         if len(stack) == 0:
-            print("error, skipping a character")
+            #print("error, skipping a character")
             i+=1
