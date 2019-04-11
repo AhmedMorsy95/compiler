@@ -1,5 +1,6 @@
 from dfaState import  state
 from min_state import  min_state
+from DFA import DFA
 from NodeGenerator import NodeGenerator
 import queue
 from string import ascii_letters
@@ -19,13 +20,14 @@ def check(c):
            dic[i]=no
            no += 1
         for j in range(i+1,len(c.nodes_of_this_class)):
-              ans  = c.is_same()
+              ans  = c.is_same(c.nodes_of_this_class[i],c.nodes_of_this_class[j],symbols_list)
               if ans == True:
                   dic[j]=dic[i]
 
 def minimization_states():
     initial_accepted_state=[]
     initial_unaccepted_state=[]
+    nothing = []
     number_of_states = len(state.state_instances)
     for s in state.state_instances:
         if s.isAccept():
@@ -66,7 +68,8 @@ def minimization_states():
     for ins in min_state.class_instance:
         node= ins.nodes_of_this_class[0]
         for symbol in symbols_list:
-            ins.add_destination(symbol,min_state.map_state_to_class[node.get_transition_state(symbol)])
+            print(node.destinations)
+            ins.add_destination(symbol,min_state.map_state_to_class[node.destinations[symbol]])
 
         for nodes in ins.nodes_of_this_class:
             if nodes.isAccept() == True :

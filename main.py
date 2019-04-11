@@ -2,11 +2,13 @@ from getInput import read_input
 from NFA import definitions_to_nfa
 import tokenizer
 from dfaState import state
+from min_state import min_state
 from RegexConverter import regexConverter
 from node import Node
 from graph import Graph
 import NFA
 import DFA
+import minimization
 from NodeGenerator import  NodeGenerator
 
 
@@ -18,6 +20,9 @@ def go(regex, definitions):
     combined = NFA.combine_nfas(nfas)
     #3. convert nfa to dfa
     dfa = DFA.nfa_to_dfa(combined)
+    print(len(state.state_instances))
+    minimization.minimization_states();
+    print(len(min_state.class_instance))
     #dfa.dfs_state()
     #4. minimize dfa
 
