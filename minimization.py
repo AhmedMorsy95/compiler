@@ -43,6 +43,7 @@ def minimization_states():
     class1.map_state_to_id()
     class2.map_state_to_id()
     while(not q.empty()):
+       print("A")
        flag=0
        total_flag=0
        c = q.get()
@@ -60,9 +61,12 @@ def minimization_states():
             class_temp.map_state_to_id()
 
         if flag ==0:
-            break
+            cnt+=1;
         else:
-            flag=1
+            flag=0
+            cnt=0
+        if cnt == number_of_states:
+            break
         dic.clear()
 
     for ins in min_state.class_instance:
@@ -79,17 +83,5 @@ def minimization_states():
 
 
 
-if __name__ == '__main__':
-    x = NodeGenerator.getInstance()
-    a = x.make_node()
-    b = x.make_node()
-    c = x.make_node()
-
-    y = state.getState([a,b])
-    z = state.getState([a,b])
-    minimization_states()
-    print(len(min_state.class_instance))
-
-    print(y,z)
 
 
