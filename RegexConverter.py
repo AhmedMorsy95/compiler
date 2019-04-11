@@ -156,6 +156,7 @@ class regexConverter:
 
         if self.definitions.count(expression):
             self.definitions_nfas=Graph.dgClone(self.definitions_nfas)
+            # print(self.definitions_nfas.get(expression).start_node.id)
             return self.definitions_nfas.get(expression)
 
         if self.symbols.count(expression):
@@ -166,7 +167,7 @@ class regexConverter:
 
     def evaluatePostfix(self,expression):
         stack = []
-        #print(expression)
+        # print(expression)
         for i in expression:
             if self.isOperator(i):
                 if i == "*" or i == "+" :
