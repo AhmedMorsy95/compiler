@@ -133,6 +133,7 @@ class regexConverter:
         # add symbols preceded with \
         for i in range(0,len(symbols)):
             tmp = "\\" + symbols[i]
+            #print(tmp)
             if self.definitions.count(tmp) == 0:
                 definitions.append(tmp)
 
@@ -184,7 +185,9 @@ class regexConverter:
                     if i == '$':
                         stack.append(Graph.mergeConcatenate([b,a]))
                     else:
-                        stack.append(Graph.mergeOr([a,b]))
+                        a1=Graph.gClone(a)
+                        b1=Graph.gClone(b)
+                        stack.append(Graph.mergeOr([a1,b1]))
 
             else:
                 stack.append(self.getNFA(i))

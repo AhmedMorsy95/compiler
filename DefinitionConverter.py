@@ -46,11 +46,14 @@ def create_def_nfa(s):
     # infix calculation of nfa
     # At this point, the possible operators are + * | ( )
     # | is the only operation that is done on 2 NFAs
+    #print('string')
+    #print(s)
     nfa_stack = []
     operators_stack = []
     for c in s:
         if c.isalnum():
             nfa_stack.append(Graph(c))
+            #print(c)
         else:
             if c == '+':
                 nfa_stack.append(Graph.keenClosurePlus(nfa_stack.pop()))
@@ -68,8 +71,11 @@ def create_def_nfa(s):
     nfas_to_merge = []
     while len(nfa_stack) != 0:
         nfas_to_merge.append(nfa_stack.pop())
+    #print(nfas_to_merge)
     nfa_stack.append(Graph.mergeOr(nfas_to_merge))
-    return nfa_stack.pop()
+    op=nfa_stack.pop()
+    #op.dfs()
+    return op
 
 # for testing
 if __name__ == '__main__':

@@ -22,9 +22,10 @@ def tokenize(dfa,input = "",priority = {}):
                     if priority[labels[k]] < priority[labels[0]]:
                         labels[0] = labels[k]
                 print(input[i:i+len(stack)]," -> ",labels[0])
+
                 i += len(stack)
                 break
 
         if len(stack) == 0:
-            print("error, skipping a character")
+            #print("error, skipping a character")
             i+=1
