@@ -133,6 +133,7 @@ class regexConverter:
         # add symbols preceded with \
         for i in range(0,len(symbols)):
             tmp = "\\" + symbols[i]
+            #print(tmp)
             if self.definitions.count(tmp) == 0:
                 definitions.append(tmp)
 
@@ -155,6 +156,7 @@ class regexConverter:
 
         if self.definitions.count(expression):
             self.definitions_nfas=Graph.dgClone(self.definitions_nfas)
+            # print(self.definitions_nfas.get(expression).start_node.id)
             return self.definitions_nfas.get(expression)
 
         if self.symbols.count(expression):
@@ -165,7 +167,7 @@ class regexConverter:
 
     def evaluatePostfix(self,expression):
         stack = []
-        #print(expression)
+        # print(expression)
         for i in expression:
             if self.isOperator(i):
                 if i == "*" or i == "+" :
@@ -183,7 +185,9 @@ class regexConverter:
                     if i == '$':
                         stack.append(Graph.mergeConcatenate([b,a]))
                     else:
-                        stack.append(Graph.mergeOr([a,b]))
+                        a1=Graph.gClone(a)
+                        b1=Graph.gClone(b)
+                        stack.append(Graph.mergeOr([a1,b1]))
 
             else:
                 stack.append(self.getNFA(i))
