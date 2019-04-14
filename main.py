@@ -2,32 +2,47 @@ from getInput import read_input
 from NFA import definitions_to_nfa
 import tokenizer
 from dfaState import state
+from min_state import min_state
 from RegexConverter import regexConverter
 from node import Node
 from graph import Graph
 import NFA
 import DFA
+import minimization
+from string import ascii_letters
 from NodeGenerator import  NodeGenerator
 
 
 def go(regex, definitions):
     # regex = [("(abc)*", "alpha"), ("123", "numerical")]
     #1. convert regex into nfa
+    priority = {}
+    sum = 0
+    for i in regex:
+        priority[i[1]] = sum
+        sum += 1
+
     nfas = NFA.convert_regex_to_nfa(regex, definitions)
     #2. combine nfas together
     combined = NFA.combine_nfas(nfas)
     #3. convert nfa to dfa
     dfa = DFA.nfa_to_dfa(combined)
+    print(len(state.state_instances))
+    minimization.minimization_states();
+    print(len(min_state.class_instance))
     #dfa.dfs_state()
     #4. minimize dfa
 
     #5. tokenization
     # "int sum,count,pass,mnt;while(pass != 10){pass=pass+1;}"
-    tokenizer.tokenize(dfa,"int abc123,count,pass,mnt;while(pass != 10){pass=pass+1;}")
+    #table = DFA.build_transition_table()
+    #DFA.print_transition_table(table)
+    # tokenizer.tokenize(dfa,"1",priority)
+    tokenizer.tokenize(dfa,"int abc123,count,pass,mnt;while(pass != 10){pass=pass+1;}",priority)
 
 if __name__ == '__main__':
 
-
+    #
     keywords_list, punc_list, definitions_dict, expressions_dict = read_input("grammar.txt")
     # keywods_list is a list of strings containg the keywords
     # punc_list is a list of strings containg the punctuation symbols

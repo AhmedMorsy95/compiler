@@ -96,12 +96,3 @@ class state:
         path = []
         self.dfs_test(self,visited,path)
 
-if __name__ == '__main__':
-    x = NodeGenerator.getInstance()
-    a = x.make_node()
-    b = x.make_node()
-    c = x.make_node()
-
-    y = state.getState([a,b])
-    z = state.getState([a,b])
-    print(y,z)
