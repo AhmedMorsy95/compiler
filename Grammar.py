@@ -16,8 +16,11 @@ class Grammar:
     def get_children(self,non_terminal):
         return self.production_rules[non_terminal]
 
+    def get_non_terminals(self):
+        return self.production_rules.keys()
+
     def is_terminal(self,string):
-        keys = production_rules.keys()
+        keys = self.production_rules.keys()
         if string in keys:
             return False
         return True
