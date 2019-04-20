@@ -21,3 +21,6 @@ class Grammar:
         if string in keys:
             return False
         return True
+
+    def get_non_terminals(self):
+        return self.production_rules.keys()
