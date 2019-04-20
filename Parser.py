@@ -10,14 +10,21 @@ class Parser:
         self.table = None
 
 
+    def initialize_dic(self,all_non_terminals):
+        for non_terminal in all_non_terminals:
+            self.first[non_terminal]= set ()
+
 
     def build_first(self):
         all_non_terminals = self.grammar.get_non_terminals()
-        visited = []
+        visited=[]
+        self.initialize_dic(all_non_terminals)
         for non_terminal in all_non_terminals:
-            if non_terminal not in visited:
+            if non_terminal not in visited :
                 visited.append(non_terminal)
                 self.dfs(non_terminal,visited)
+
+        print(self.first)
 
     def build_follow(self):
 
@@ -36,24 +43,21 @@ class Parser:
         return None
 
     def dfs(self,parent,visited):
-        if self.grammar.is_terminal(parent):
-            self.first[parent]=[parent]
+        if self.grammar.is_terminal(parent) or parent == self.grammar.epsilon:
+            self.first[parent]=set()
+            self.first[parent].add(parent)
             return None
         lst = self.grammar.get_children(parent)
         children=[]
-        children.append([x[0] for x in lst])
+        for x in lst:
+            children.append(x[0])
         for child in children:
           if child not in visited:
             visited.append(child)
-            first_of_child = self.dfs(child)
-            for f in first_of_child:
-                self.first[parent].append(f)
-          else:
-            first_of_child = self.first[child]
-            for f in first_of_child:
-                self.first[parent].append(f)
-
-
+            self.dfs(child,visited)
+          first_of_child = self.first[child]
+          for f in first_of_child:
+                self.first[parent].add(f)
 
         return None
 
