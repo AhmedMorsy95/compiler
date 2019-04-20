@@ -6,8 +6,10 @@ class Grammar:
     def __init__(self,production_rules,start_symbol):
         self.production_rules = production_rules
         self.start_symbol = start_symbol
+        self.epsilon = "\L"
 
     def is_ll_grammar(self):
+        # calculated using first , follow and table
         return True
 
     def get_start_symbol(self):
