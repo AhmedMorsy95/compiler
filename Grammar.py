@@ -1,4 +1,3 @@
-
 class Grammar:
 
     # production rules which is a dictionary
