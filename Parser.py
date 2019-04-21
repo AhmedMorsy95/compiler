@@ -1,3 +1,4 @@
+from tabulate import tabulate
 
 class Parser:
 
@@ -101,17 +102,83 @@ class Parser:
                             idx-=1
 
             updates = new_updates
-            
+
+    def get_first_for_list(self,list):
+        terminals = set()
+        for cur_symbol in list:
+            for k in self.first[cur_symbol]:
+                terminals.add(k)
+            if not self.grammar.epsilon in self.first[cur_symbol]:
+                break
+        return terminals
+
+    def add_entry_to_table(self,non_terminal,terminal,list):
+        if terminal in self.table[non_terminal].keys():
+            print(non_terminal,terminal,list,self.table[non_terminal][terminal])
+            if self.table[non_terminal][terminal] != list:
+                raise Exception('Grammar is not LL!\nMultiple entrie in 1 cell in the table')
+        else:
+            self.table[non_terminal][terminal] = list
+
     def build_table(self):
-        return None
+        non_terminals = self.grammar.get_non_terminals()
+        self.table = dict()
+        # dictionary of dictionaries
+        for i in non_terminals:
+            self.table[i] = dict()
+
+        for i in non_terminals:
+            children = self.grammar.get_children(i)
+            for list in children:
+                # A -> B
+                # for each terminal x in first(B) add A -> B to M[A,x]
+                first = self.get_first_for_list(list)
+                for terminals in first:
+                    if terminals != self.grammar.epsilon:
+                        self.add_entry_to_table(i,terminals,list)
+
+                # if eps in first of B
+                # for each terminal x in follow(A) add A -> B in M[A,x]
+                if self.grammar.epsilon in first:
+                    follow = self.follow[i]
+                    for terminals in follow:
+                        if terminals != '$':
+                            self.add_entry_to_table(i,terminals,list)
+
+                    if '$' in self.follow[i]:
+                        self.add_entry_to_table(i,'$',list)
+
+    def print_table(self):
+        terminals = self.grammar.get_terminals()
+        terminals.add('$')
+        terminals.remove('\\L')
+        non_terminals = self.grammar.get_non_terminals()
+        data = []
+
+        for i in non_terminals:
+            datum = []
+            datum.append(i)
+            for j in terminals:
+
+                if j in self.table[i].keys():
+                    datum.append(self.table[i][j])
+                else:
+                    datum.append("none")
+            data.append(datum)
+
+        headers = []
+        headers.append("Non terminals")
+        for i in terminals :
+            headers.append(i)
+
+        print(tabulate(data,headers))
 
     def build(self):
         self.build_first()
-        print("first\n",self.first)
+        # print("first\n",self.first)
         self.build_follow()
-        print("follow\n",self.follow)
+        # print("follow\n",self.follow)
         self.build_table()
-
 
     def parse(self,tokens):
         return None

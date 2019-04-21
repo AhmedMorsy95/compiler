@@ -11,3 +11,4 @@ if __name__ == '__main__':
     grammar_instance  = Grammar(procution_rules,start_symbol)
     parser_instance = Parser(grammar_instance)
     parser_instance.build()
+    parser_instance.print_table()
