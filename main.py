@@ -12,34 +12,6 @@ import minimization
 from string import ascii_letters
 from NodeGenerator import  NodeGenerator
 
-
-def go(regex, definitions):
-    # regex = [("(abc)*", "alpha"), ("123", "numerical")]
-    #1. convert regex into nfa
-    priority = {}
-    sum = 0
-    for i in regex:
-        priority[i[1]] = sum
-        sum += 1
-
-    nfas = NFA.convert_regex_to_nfa(regex, definitions)
-    #2. combine nfas together
-    combined = NFA.combine_nfas(nfas)
-    #3. convert nfa to dfa
-    dfa = DFA.nfa_to_dfa(combined)
-    print(len(state.state_instances))
-    minimization.minimization_states();
-    print(len(min_state.class_instance))
-    #dfa.dfs_state()
-    #4. minimize dfa
-
-    #5. tokenization
-    # "int sum,count,pass,mnt;while(pass != 10){pass=pass+1;}"
-    #table = DFA.build_transition_table()
-    #DFA.print_transition_table(table)
-    # tokenizer.tokenize(dfa,"1",priority)
-    tokenizer.tokenize(dfa,"int abc123,count,pass,mnt;while(pass != 10){pass=pass+1;}",priority)
-
 if __name__ == '__main__':
 
     #
@@ -52,14 +24,43 @@ if __name__ == '__main__':
     definitions_nfas = definitions_to_nfa(definitions_dict)
     # definitions_nfas is a dictionary, the key (string) is the definition name, and the value is the corresponding NFA of that definition (Graph object)
 
-    regex_all = []
+    regex = []
     for i in keywords_list:
-        regex_all.append((i.replace(" ", ""), i))
+        regex.append((i.replace(" ", ""), i))
 
     for i in punc_list:
-        regex_all.append((i.replace(" ", ""),  i))
+        regex.append((i.replace(" ", ""),  i))
 
     for key, values in expressions_dict.items():
-        regex_all.append((values.replace(" ", ""), key))
+        regex.append((values.replace(" ", ""), key))
 
-    go(regex_all, definitions_nfas)
+    # regex = [("(abc)*", "alpha"), ("123", "numerical")]
+    #1. convert regex into nfa
+    priority = {}
+    sum = 0
+    for i in regex:
+        priority[i[1]] = sum
+        sum += 1
+
+    nfas = NFA.convert_regex_to_nfa(regex, definitions_nfas)
+    #2. combine nfas together
+    combined = NFA.combine_nfas(nfas)
+
+    #3. convert nfa to dfa
+    dfa = DFA.nfa_to_dfa(combined)
+    print(len(state.state_instances))
+
+    #4. minimize dfa
+    minimization.minimization_states();
+    print(len(min_state.class_instance))
+
+    #5. tokenization
+    with open("input.txt", 'r') as file:
+        file_lines = file.readlines()
+        file.close()
+    i = 0
+    for line in file_lines:
+        print("Line " + str(i + 1) + ':')
+        tokenizer.tokenize(dfa,line,priority)
+        print('\n')
+        i += 1
