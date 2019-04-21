@@ -42,7 +42,6 @@ class Parser:
         # if A -> cBx
         # then all first of x are added to follow of B except eps
 
-
         # loop on non terminals
         for i in non_terminals:
             # get the RHS
@@ -72,29 +71,37 @@ class Parser:
         # A -> alphaB or A -> alphaBbeta and first(beta) has epsilon
         # everything in follow A is in follow B
 
-        for i in non_terminals:
-            # get the RHS
-            children = self.grammar.get_children(i)
-            # loop on elements in RHS
-            for list in children:
-                idx = len(list)-1
-                has_espsilon = True
+        # repeat until there is no updates
+        updates = True
+        while updates:
 
-                while idx >= 0 and has_espsilon:
-                    cur_symbol = list[idx]
-                    # if the last symbol is non terminal
-                    if not self.grammar.is_terminal(cur_symbol):
-                        follow = self.follow[i]
-                        for k in follow:
-                            self.follow[cur_symbol].add(k)
+            new_updates = False
+            for i in non_terminals:
+                    # get the RHS
+                    children = self.grammar.get_children(i)
+                    # loop on elements in RHS
+                    for list in children:
+                        idx = len(list)-1
+                        has_espsilon = True
 
-                        has_espsilon = self.grammar.epsilon in self.first[cur_symbol]
-                    else: # terminal
-                        has_espsilon = False
+                        while idx >= 0 and has_espsilon:
+                            cur_symbol = list[idx]
+                            # if the last symbol is non terminal
+                            if not self.grammar.is_terminal(cur_symbol):
+                                follow = self.follow[i]
+                                for k in follow:
+                                    if not k in self.follow[cur_symbol]:
+                                        new_updates = True
+                                        self.follow[cur_symbol].add(k)
 
-                    idx-=1
+                                has_espsilon = self.grammar.epsilon in self.first[cur_symbol]
+                            else: # terminal
+                                has_espsilon = False
 
+                            idx-=1
 
+            updates = new_updates
+            
     def build_table(self):
         return None
 
