@@ -20,6 +20,19 @@ class Grammar:
     def get_non_terminals(self):
         return self.production_rules.keys()
 
+    def get_terminals(self):
+
+        terminals = set()
+        non_terminals = self.get_non_terminals()
+        for i in non_terminals:
+            children = self.get_children(i)
+            for list in children:
+                for string in list:
+                    if self.is_terminal(string):
+                        terminals.add(string)
+
+        return terminals
+
     def is_terminal(self,string):
         keys = self.production_rules.keys()
         if string in keys:
