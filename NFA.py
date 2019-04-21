@@ -70,7 +70,7 @@ def definitions_to_nfa(definitions_dict):
     '''
     nfa_dict = {}
     for key, val in definitions_dict.items():
-        nfa_dict[key] = create_def_nfa(val)
+        nfa_dict[key] = create_def_nfa(val, nfa_dict)
 
     return nfa_dict
 

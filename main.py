@@ -63,4 +63,3 @@ if __name__ == '__main__':
         regex_all.append((values.replace(" ", ""), key))
 
     go(regex_all, definitions_nfas)
-

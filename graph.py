@@ -60,7 +60,8 @@ class Graph:
 
         for i in cur.edges:
             z = s
-            z.append([i[1],[i for i in i[0].names],cur.id])
+            # z.append([i[1],[i for i in i[0].names],cur.id])
+            z.append([cur.id,i[1],i[0].id])
             self.go(i[0],z)
             z.pop()
 
@@ -110,27 +111,40 @@ class Graph:
         :param graph: a graph
         :return:
         """
-        n = NodeGenerator.getInstance()
-        g = Graph("@")
-        # g.start_node.clearEdges()
+        new_graph = Graph("@")
+        graph = Graph.gClone(graph)
+        # add new start
+        new_graph.start_node.add_destination_node("@", graph.start_node)
+        graph.start_node.isStart = False
+        # add new finish with edge epsilon
+        graph.accept_state.add_destination_node("@", new_graph.accept_state)
+        graph.accept_state.isFinish = False
         # repeat more than once
         graph.accept_state.add_destination_node("@", graph.start_node)
-        # add new finish with edge epsilon
-        graph.accept_state.add_destination_node("@", g.accept_state)
-        graph.accept_state.isFinish = 0
-        # add new start
-        g.start_node.add_destination_node("@", graph.start_node)
-        graph.start_node.isStart = 0
-        # repeat zero times
-        return g
+
+        return new_graph
 
     @staticmethod
-    def keenClosurePlus(graphs):
-       graph = []
-       graph.append(graphs)
-       graph.append(Graph.keenClosure(graphs))
-       return Graph.mergeConcatenate(graph)
-#
+    def keenClosurePlus(graph):
+        """
+        uses the positive closure operator on a graph to produce a new graph using thompson algorithm
+        :param graph: a graph
+        :return:
+        """
+        new_graph = Graph("@")
+        new_graph.start_node.clearEdges()
+        graph = Graph.gClone(graph)
+        # add new start
+        new_graph.start_node.add_destination_node("@", graph.start_node)
+        graph.start_node.isStart = False
+        # add new finish with edge epsilon
+        graph.accept_state.add_destination_node("@", new_graph.accept_state)
+        graph.accept_state.isFinish = False
+        # repeat more than once
+        graph.accept_state.add_destination_node("@", graph.start_node)
+
+        return new_graph
+
 # if __name__ == '__main__':
 #     # just messin around
 #     a = Node(1)
