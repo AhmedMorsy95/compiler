@@ -1,4 +1,3 @@
-
 def read_input(file_name):
     f = open(file_name, "r")
     contents = f.read().split('#')
@@ -40,11 +39,11 @@ def split_line(line):
         for i in range(0,len(one_side)):
             one_side[i] = one_side[i].replace(" ","")
             one_side[i] = one_side[i].rstrip()
-            if one_side[i][0] == "‘"  or one_side[i][0] == "’":
+            if one_side[i][0] == "‘"  or one_side[i][0] == "’" or one_side[i][0] == "'":
                 one_side[i] = one_side[i].replace("‘","")
                 one_side[i] = one_side[i].replace("’", "")
+                one_side[i] = one_side[i].replace("'", "")
 
         modified_rhs.append(one_side)
 
     return lhs.replace(" ",""),modified_rhs
-
