@@ -16,6 +16,7 @@ dic ={} # for mappinhg same state
 def check(c):
     no=0
     for i in range(0,len(c.nodes_of_this_class)):
+        print(i)
         if not i in dic:
            dic[i]=no
            no += 1
@@ -30,6 +31,7 @@ def minimization_states():
     initial_unaccepted_state=[]
     nothing = []
     number_of_states = len(state.state_instances)
+    print("number of states",number_of_states)
     for s in state.state_instances:
         if s.isAccept():
             initial_accepted_state.append(s)
@@ -44,7 +46,6 @@ def minimization_states():
     class1.map_state_to_id()
     class2.map_state_to_id()
     while(not q.empty()):
-       print("A")
        flag=0
        total_flag=0
        c = q.get()
@@ -60,8 +61,9 @@ def minimization_states():
         if len(l) != 0:
             class_temp= min_state(l)
             q.put(class_temp)
-            q.put(c)
             class_temp.map_state_to_id()
+
+        q.put(c)
 
         if flag ==0:
             cnt+=1;
@@ -80,9 +82,4 @@ def minimization_states():
             if nodes.isAccept() == True :
                 ins.accept_state= True
                 break
-
-
-
-
-
-
+    print(len(min_state.class_instance))
