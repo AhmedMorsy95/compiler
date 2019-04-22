@@ -1,6 +1,8 @@
 import queue
 
 class Node:
+    transition_states = {}
+
     def __init__(self, id, isStart= False, isFinish= False, isDead= False):
         self.edges = []
         self.isStart = isStart
@@ -37,11 +39,20 @@ class Node:
         if char == '@':
             ret.append(self)
 
-        q = queue.Queue()
-        if (char in self.move_destinations.keys()):
+        saved_char = char
+        if char not in Node.transition_states.keys():
+            Node.transition_states[char] = {}
+        else:
+            if self in Node.transition_states[char].keys():
+                return Node.transition_states[char][self]
 
+        q = queue.Queue()
+        visited = set()
+        if (char in self.move_destinations.keys()):
             for i in self.move_destinations[char]:
-                q.put(i)
+                if not i in visited:
+                    q.put(i)
+                    visited.add(i)
 
         char = "@"
         while not q.empty():
@@ -50,9 +61,9 @@ class Node:
             if ( char in cur.move_destinations.keys() ):
                 list = cur.move_destinations[char]
                 for i in list:
-                    q.put(i)
+                    if not i in visited:
+                        visited.add(i)
+                        q.put(i)
 
+        Node.transition_states[saved_char][self] = ret
         return ret
-
-
-
