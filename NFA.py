@@ -36,7 +36,7 @@ def convert_regex_to_nfa(regex , definitions):
         x.addDefinition(key)
         #value.dfs()
     # TODO : ask whether \L will give an error and should be \\L
-    reserved_symbols = ["+", "*", "(", ")", "\L", "="]
+    reserved_symbols = ["+", "*", "(", ")", "L", "="]
     for i in reserved_symbols:
         x.addSymbol(i)
 
