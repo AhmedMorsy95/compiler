@@ -61,6 +61,8 @@ if __name__ == '__main__':
     i = 0
     for line in file_lines:
         print("Line " + str(i + 1) + ':')
-        tokenizer.tokenize(dfa,line,priority)
+        tokens = tokenizer.tokenize(dfa,line,priority)
+        for token in tokens:
+            print(token)
         print('\n')
         i += 1
