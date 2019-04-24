@@ -1,4 +1,4 @@
-from dfaState import state
+from .dfaState import state
 
 class min_state:
     id = 0

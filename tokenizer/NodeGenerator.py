@@ -1,7 +1,7 @@
-from node import Node
+from .node import Node
 
 """
-Only one NodeGenerator object in program , this is the factory of nodes that gives each node a distinct non-repeatable 
+Only one NodeGenerator object in program , this is the factory of nodes that gives each node a distinct non-repeatable
 id
 """
 class NodeGenerator:

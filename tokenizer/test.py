@@ -1,14 +1,14 @@
-from getInput import read_input
-from NFA import definitions_to_nfa
-from main import go
+from .getInput import read_input
+from .NFA import definitions_to_nfa
+from .main import go
 import tokenizer
-from dfaState import state
-from RegexConverter import regexConverter
-from node import Node
-from graph import Graph
+from .dfaState import state
+from .RegexConverter import regexConverter
+from .node import Node
+from .graph import Graph
 import NFA
 import DFA
-from NodeGenerator import  NodeGenerator
+from .NodeGenerator import  NodeGenerator
 
 keywords_list, punc_list, definitions_dict, expressions_dict = read_input("grammar.txt")
 

@@ -1,16 +1,16 @@
-from getInput import read_input
-from NFA import definitions_to_nfa
-import tokenizer
-from dfaState import state
-from min_state import min_state
-from RegexConverter import regexConverter
-from node import Node
-from graph import Graph
-import NFA
-import DFA
-import minimization
+from tokenizer.getInput import read_input
+from tokenizer.NFA import definitions_to_nfa
+import tokenizer.tokenizer as tokenizer
+from tokenizer.dfaState import state
+from tokenizer.min_state import min_state
+from tokenizer.RegexConverter import regexConverter
+from tokenizer.node import Node
+from tokenizer.graph import Graph
+import tokenizer.NFA as NFA
+import tokenizer.DFA as DFA
+import tokenizer.minimization as minimization
 from string import ascii_letters
-from NodeGenerator import  NodeGenerator
+from tokenizer.NodeGenerator import  NodeGenerator
 
 if __name__ == '__main__':
 
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     print(len(state.state_instances))
 
     #4. minimize dfa
-    minimization.minimization_states();
+    # minimization.minimization_states();
     print(len(min_state.class_instance))
 
     #5. tokenization

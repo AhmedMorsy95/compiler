@@ -1,7 +1,7 @@
-from dfaState import  state
-from min_state import  min_state
-from DFA import DFA
-from NodeGenerator import NodeGenerator
+from .dfaState import  state
+from .min_state import  min_state
+from .DFA import DFA
+from .NodeGenerator import NodeGenerator
 import queue
 from string import ascii_letters
 

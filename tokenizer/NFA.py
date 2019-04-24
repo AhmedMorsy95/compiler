@@ -12,11 +12,11 @@
 # example a+b* becomes [a,b,*,+] where a and b are instances of class graph
 # * or + are unary operations which means they must come after first operator
 
-from graph import Graph
-from RegexConverter import regexConverter
-from DefinitionConverter import create_def_nfa
-import DFA
-import tokenizer
+from .graph import Graph
+from .RegexConverter import regexConverter
+from .DefinitionConverter import create_def_nfa
+from .DFA import DFA
+from .tokenizer import *
 #input is 1. list of definitions as strings
 #         2. list of regex as strings
 def convert_regex_to_nfa(regex , definitions):

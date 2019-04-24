@@ -1,7 +1,7 @@
 # need to provide it with definitions
-from NodeGenerator import NodeGenerator
-from graph import *
-import DFA
+from .NodeGenerator import NodeGenerator
+from .graph import *
+from .DFA import DFA
 class regexConverter:
 
     def __init__(self):

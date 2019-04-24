@@ -1,8 +1,8 @@
-from LexicalAnalyzer import LexicalAnalyzer
-from getInput import read_input
-from NFA import convert_regex_to_nfa, definitions_to_nfa, combine_nfas
-from DFA import nfa_to_dfa
-from DFAminimization import minimize
+from .LexicalAnalyzer import LexicalAnalyzer
+from .getInput import read_input
+from .NFA import convert_regex_to_nfa, definitions_to_nfa, combine_nfas
+from .DFA import nfa_to_dfa
+from .DFAminimization import minimize
 class LexicalAnalyzerGenerator:
     """
     Factory class that is instantiated to create a Lexical Analyzer object and encapsulates the whole creation process
@@ -57,5 +57,3 @@ if __name__ == '__main__':
     min_dfa = LAG.minimize_dfa(dfa)
     # the only line that will actually be used:
     lexical_analyzer, transition_table = LAG.generate(input_file)
-
-

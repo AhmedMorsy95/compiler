@@ -1,4 +1,4 @@
-from dfaState import state
+from .dfaState import state
 def tokenize(dfa,input = "",priority = {}):
     # input is a string
 

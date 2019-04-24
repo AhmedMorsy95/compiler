@@ -1,6 +1,7 @@
 import queue
-from dfaState import state
+from .dfaState import state
 from string import ascii_letters
+
 class DFA:
     def __init__(self):
         self.accept_states = []

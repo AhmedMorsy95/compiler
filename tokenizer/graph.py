@@ -1,5 +1,5 @@
-from NodeGenerator import NodeGenerator
-from node import *
+from .NodeGenerator import NodeGenerator
+from .node import *
 import queue
 import copy
 # this class represents a single NFA that has a start node and maybe 0 or more accept (finish) nodes

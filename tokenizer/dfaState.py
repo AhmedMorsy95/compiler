@@ -1,5 +1,5 @@
 # a state is the building block for dfa
-from NodeGenerator import NodeGenerator
+from .NodeGenerator import NodeGenerator
 class state:
 
     state_Nodes = [] # keep all combinations of nodes i met so far
@@ -95,4 +95,3 @@ class state:
         visited = []
         path = []
         self.dfs_test(self,visited,path)
-
