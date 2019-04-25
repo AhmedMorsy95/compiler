@@ -56,7 +56,7 @@ def read_input(file_path):
     keywords_regex = re.compile(r"\{.*\}")
     punc_regex = re.compile(r"\[.*\]")
     definitions_regex = re.compile(r"([a-z]|[A-Z])*[ \t]*=.+")
-    expressions_regex = re.compile(r"([a-z]|[A-Z])*[ \t]*:.+")
+    expressions_regex = re.compile(r".*[ \t]*:.+")
     for line in file_lines:
         if keywords_regex.match(line) is not None:
             keywords_list.extend([ k for k in line[1:-2].split(' ') if k != ''])

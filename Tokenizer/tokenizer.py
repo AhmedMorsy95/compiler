@@ -6,9 +6,9 @@ from .min_state import min_state
 from .RegexConverter import regexConverter
 from .node import Node
 from .graph import Graph
-import tokenizer.NFA as NFA
-import tokenizer.DFA as DFA
-import tokenizer.minimization as minimization
+import Tokenizer.NFA as NFA
+import Tokenizer.DFA as DFA
+import Tokenizer.minimization as minimization
 from string import ascii_letters
 from .NodeGenerator import  NodeGenerator
 
@@ -59,7 +59,6 @@ def get_tokens(grammar_file_name, input_file_name, print_tokens=False, minimize=
     # punc_list is a list of strings containg the punctuation symbols
     # definitions_dict is a dictionary, the key (string) is the definition name, and the value is the regex string that represents the definition
     # expressions_dict is a dictionary, the key (string) is the expression name, and the value is the regex string that represents the expression
-
     definitions_nfas = definitions_to_nfa(definitions_dict)
     # definitions_nfas is a dictionary, the key (string) is the definition name, and the value is the corresponding NFA of that definition (Graph object)
 
@@ -87,15 +86,10 @@ def get_tokens(grammar_file_name, input_file_name, print_tokens=False, minimize=
 
     #3. convert nfa to dfa
     dfa = DFA.nfa_to_dfa(combined)
-    if print_tokens:
-        print(len(state.state_instances))
 
     #4. minimize dfa
     if minimize:
         minimization.minimization_states()
-
-    if print_tokens:
-        print(len(min_state.class_instance))
 
     #5. tokenization
     with open(input_file_name, 'r') as file:
