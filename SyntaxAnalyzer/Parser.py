@@ -263,7 +263,8 @@ class Parser:
                     list_of_production=self.get_production(non_terminal,input[0])
                     list_of_production.reverse()
                     for element in list_of_production:
-                        stack.append(element)
+                        if element != '\L':
+                            stack.append(element)
                     list_of_production.reverse()
                     output_string+=" ".join(list_of_production)
                     output=output_string
@@ -279,4 +280,3 @@ class Parser:
             print("UNMatched",input)
         else:
             print(tabulate(simulation, ["stack","input","production used"]))
-
