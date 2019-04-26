@@ -6,19 +6,22 @@ class Grammar:
         self.production_rules = production_rules
         self.start_symbol = start_symbol
         self.epsilon = "\L"
-        print(self.is_left_recursive(stack = [self.start_symbol]))
-        # self.convert_to_ll_grammar()
+        # print(self.is_left_recursive(stack = [self.start_symbol]))
+        self.convert_to_ll_grammar()
 
     def convert_to_ll_grammar(self):
-        self.eliminate_immediate_left_recursion()
+        print(self.production_rules)
         self.eliminate_non_immediate_left_recursion()
+        print(self.production_rules)
+        self.eliminate_immediate_left_recursion()
+        print(self.production_rules)
 
     def eliminate_immediate_left_recursion(self):
-        if not self.is_ll_grammar():
-            print("Converting grammar to LL(1)")
+        if not self.is_immediate_left_recursive():
+            print("Converting immediate left recursive grammar to LL(1) grammar")
             ll_rules = {}
             for non_terminal, rules in self.production_rules.items():
-                if self.is_immediate_left_recursive(non_terminal, rules):
+                if self.is_rule_immediate_left_recursive(non_terminal, rules):
                     left_recursive = []
                     non_left_recursive = []
                     for rule in rules:
@@ -38,21 +41,33 @@ class Grammar:
                     ll_rules[non_terminal] = rules
             self.production_rules = ll_rules
 
-    def is_immediate_left_recursive(self, non_terminal, rules):
+    def is_rule_immediate_left_recursive(self, non_terminal, rules):
         for rule in rules:
             if rule[0] == non_terminal:
                 return True
         return False
 
-    def is_ll_grammar(self):
+    def is_immediate_left_recursive(self):
         flag = True
         for non_terminal, rules in self.production_rules.items():
-            flag = flag and not self.is_immediate_left_recursive(non_terminal, rules)
+            flag = flag and not self.is_rule_immediate_left_recursive(non_terminal, rules)
         return flag
 
-    # def eliminate_non_immediate_left_recursion(self):
-    #     if self.is_left_recursive(stack = [self.start_symbol]):
-    #         ads
+    def eliminate_non_immediate_left_recursion(self):
+        if self.is_left_recursive(stack = [self.start_symbol]):
+            print("Converting non immediate left recursive grammar to immediate left recursive grammar")
+            ll_rules = {}
+            for non_terminal, rules in self.production_rules.items():
+                ll_rules[non_terminal] = []
+                for rule in rules:
+                    if rule[0] in self.get_non_terminals():
+                        composite_non_terminal = rule[0]
+                        for composite_rule in self.production_rules[composite_non_terminal]:
+                            ll_rules[non_terminal].append(composite_rule + rule[1:])
+                    else:
+                        ll_rules[non_terminal].append(rule)
+            self.production_rules = ll_rules
+
 
     def is_left_recursive(self, stack = [], visited = [], flag = False):
         if len(stack) > 0:
