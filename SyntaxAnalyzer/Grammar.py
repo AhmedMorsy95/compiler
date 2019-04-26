@@ -7,7 +7,7 @@ class Grammar:
     def __init__(self,production_rules,start_symbol):
         self.production_rules = production_rules
         self.start_symbol = start_symbol
-        self.epsilon = "\L"
+        self.epsilon = '\L'
         # print(self.is_left_recursive(stack = [self.start_symbol]))
         self.convert_to_ll_grammar()
 
@@ -27,8 +27,8 @@ class Grammar:
         print("Removing extra epsilons")
         for non_terminal, rules in self.production_rules.items():
             for rule in rules:
-                if len(rule) > 1 and '\L' in rule:
-                    rule.remove('\L')
+                if len(rule) > 1 and self.epsilon in rule:
+                    rule.remove(self.epsilon)
 
     def find_prefixes(self, rules):
         zipped = zip_longest(*rules, fillvalue='')
@@ -92,7 +92,7 @@ class Grammar:
                             for suffix in suffixes[prefix]:
                                 suffix = list(suffix)
                                 if len(suffix) == 0:
-                                    suffix = ['\L']
+                                    suffix = [self.epsilon]
                                 ll_rules[new_non_terminal].append(list(suffix))
                         else:
                             ll_rules[non_terminal].append([prefix])
@@ -122,7 +122,7 @@ class Grammar:
                         ll_rules[non_terminal].append(rule + [non_terminal_dash])
                     for rule in left_recursive:
                         ll_rules[non_terminal_dash].append(rule[1:] + [non_terminal_dash])
-                    ll_rules[non_terminal_dash].append(['\L'])
+                    ll_rules[non_terminal_dash].append([self.epsilon])
                 else:
                     ll_rules[non_terminal] = rules
             self.production_rules = ll_rules
