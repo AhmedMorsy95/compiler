@@ -20,6 +20,15 @@ class Grammar:
         print(self.production_rules)
         self.eliminate_immediate_left_recursion()
         print(self.production_rules)
+        self.eliminate_extra_epsilon()
+        print(self.production_rules)
+
+    def eliminate_extra_epsilon(self):
+        print("Removing extra epsilons")
+        for non_terminal, rules in self.production_rules.items():
+            for rule in rules:
+                if len(rule) > 1 and '\L' in rule:
+                    rule.remove('\L')
 
     def find_prefixes(self, rules):
         zipped = zip_longest(*rules, fillvalue='')
@@ -103,7 +112,10 @@ class Grammar:
                             left_recursive.append(rule)
                         else:
                             non_left_recursive.append(rule)
-                    non_terminal_dash = non_terminal + "`"
+                    dash = '`'
+                    non_terminal_dash = non_terminal + dash
+                    while non_terminal_dash in self.get_non_terminals():
+                        non_terminal_dash += dash
                     ll_rules[non_terminal] = []
                     ll_rules[non_terminal_dash] = []
                     for rule in non_left_recursive:
