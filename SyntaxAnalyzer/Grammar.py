@@ -15,20 +15,25 @@ class Grammar:
         print("Original grammar")
         print(self.production_rules)
         self.left_factor()
-        print(self.production_rules)
         self.eliminate_non_immediate_left_recursion()
-        print(self.production_rules)
         self.eliminate_immediate_left_recursion()
-        print(self.production_rules)
         self.eliminate_extra_epsilon()
-        print(self.production_rules)
 
-    def eliminate_extra_epsilon(self):
-        print("Removing extra epsilons")
+    def has_extra_epsilons(self):
         for non_terminal, rules in self.production_rules.items():
             for rule in rules:
                 if len(rule) > 1 and self.epsilon in rule:
-                    rule.remove(self.epsilon)
+                    return True
+        return False
+
+    def eliminate_extra_epsilon(self):
+        if self.has_extra_epsilons():
+            print("Removing extra epsilons")
+            for non_terminal, rules in self.production_rules.items():
+                for rule in rules:
+                    if len(rule) > 1 and self.epsilon in rule:
+                        rule.remove(self.epsilon)
+            print(self.production_rules)
 
     def find_prefixes(self, rules):
         zipped = zip_longest(*rules, fillvalue='')
@@ -63,41 +68,52 @@ class Grammar:
         elif len(s) > 1:
             return False
 
-    def left_factor(self):
-        print("Left factoring grammar")
-        working_flag = True
-        while working_flag:
-            done_flag = True
-            for non_terminal, rules in self.production_rules.items():
-                prefixes = self.find_prefixes(rules)
-                suffixes = self.find_prefix_suffixes(rules, prefixes)
-                for key, suffix in suffixes.items():
-                    done_flag = done_flag and self.is_suffix_set_empty(suffix)
+    def needs_left_factoring(self):
+        for non_terminal, rules in self.production_rules.items():
+            if len(rules) >= 2:
+                for i in range(0,len(rules)):
+                    for j in range(i + 1, len(rules)):
+                        if rules[i][0] == rules[j][0]:
+                            return True
+        return False
 
-            working_flag = not done_flag
-            if working_flag:
-                ll_rules = {}
+    def left_factor(self):
+        if self.needs_left_factoring():
+            print("Left factoring grammar")
+            working_flag = True
+            while working_flag:
+                done_flag = True
                 for non_terminal, rules in self.production_rules.items():
                     prefixes = self.find_prefixes(rules)
                     suffixes = self.find_prefix_suffixes(rules, prefixes)
-                    ll_rules[non_terminal] = []
-                    for prefix in prefixes:
-                        if not self.is_suffix_set_empty(suffixes[prefix]):
-                            dash = '`'
-                            new_non_terminal = non_terminal + dash
-                            while new_non_terminal in ll_rules.keys():
-                                new_non_terminal += dash
-                            ll_rules[new_non_terminal] = []
-                            ll_rules[non_terminal].append([prefix, new_non_terminal])
-                            for suffix in suffixes[prefix]:
-                                suffix = list(suffix)
-                                if len(suffix) == 0:
-                                    suffix = [self.epsilon]
-                                ll_rules[new_non_terminal].append(list(suffix))
-                        else:
-                            ll_rules[non_terminal].append([prefix])
+                    for key, suffix in suffixes.items():
+                        done_flag = done_flag and self.is_suffix_set_empty(suffix)
 
-                self.production_rules = ll_rules
+                working_flag = not done_flag
+                if working_flag:
+                    ll_rules = {}
+                    for non_terminal, rules in self.production_rules.items():
+                        prefixes = self.find_prefixes(rules)
+                        suffixes = self.find_prefix_suffixes(rules, prefixes)
+                        ll_rules[non_terminal] = []
+                        for prefix in prefixes:
+                            if not self.is_suffix_set_empty(suffixes[prefix]):
+                                dash = '`'
+                                new_non_terminal = non_terminal + dash
+                                while new_non_terminal in ll_rules.keys():
+                                    new_non_terminal += dash
+                                ll_rules[new_non_terminal] = []
+                                ll_rules[non_terminal].append([prefix, new_non_terminal])
+                                for suffix in suffixes[prefix]:
+                                    suffix = list(suffix)
+                                    if len(suffix) == 0:
+                                        suffix = [self.epsilon]
+                                    ll_rules[new_non_terminal].append(list(suffix))
+                            else:
+                                ll_rules[non_terminal].append([prefix])
+
+                    self.production_rules = ll_rules
+            print(self.production_rules)
 
     def eliminate_immediate_left_recursion(self):
         if not self.is_immediate_left_recursive():
@@ -126,6 +142,7 @@ class Grammar:
                 else:
                     ll_rules[non_terminal] = rules
             self.production_rules = ll_rules
+            print(self.production_rules)
 
     def is_rule_immediate_left_recursive(self, non_terminal, rules):
         for rule in rules:
@@ -153,6 +170,7 @@ class Grammar:
                     else:
                         ll_rules[non_terminal].append(rule)
             self.production_rules = ll_rules
+            print(self.production_rules)
 
 
     def is_left_recursive(self, stack = [], visited = [], flag = False):
