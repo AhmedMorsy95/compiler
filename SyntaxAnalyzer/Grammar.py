@@ -1,3 +1,5 @@
+from itertools import zip_longest
+
 class Grammar:
 
     # production rules which is a dictionary
@@ -15,6 +17,51 @@ class Grammar:
         print(self.production_rules)
         self.eliminate_immediate_left_recursion()
         print(self.production_rules)
+        self.left_factor()
+
+    def find_prefixes(self, rules):
+        zipped = zip_longest(*rules, fillvalue='')
+        for index, letters in enumerate(zipped):
+            if index == 0:
+                prefixes = letters  # assumes there will always be a prefix
+            else:
+                poss_prefixes = [prefix + letters[i] for i, prefix in enumerate(prefixes)]
+                prefixes = [prefix if poss_prefixes.count(prefix) == letters.count(prefix)  # changed > 1 to == letters.count(prefix)
+                            else prefixes[i] for i, prefix in enumerate(poss_prefixes)]
+        return set(prefixes)
+
+    def find_prefix_suffixes(self, rules, prefixes):
+        prefix_suffix = dict()
+        for rule in rules:
+            for prefix in sorted(list(prefixes), key=lambda x: len(x), reverse=True):
+                if rule[0] == prefix:
+                    if prefix in prefix_suffix:
+                        prefix_suffix[prefix].add(tuple(rule[1:]))
+                    else:
+                        prefix_suffix[prefix] = set([tuple(rule[1:])])
+        return prefix_suffix
+
+    def left_factor(self):
+        print("\n")
+        working_flag = True
+        print(self.production_rules)
+        while working_flag:
+            ll_rules = {}
+            for non_terminal, rules in self.production_rules.items():
+                prefixes = self.find_prefixes(rules)
+                print(non_terminal, '->', prefixes)
+                suffixes = self.find_prefix_suffixes(rules, prefixes)
+                print(suffixes, "\n")
+                done_flag = True
+                for key, suffix in suffixes.items():
+                    for s in suffix:
+                        done_flag = done_flag and (len(s) == 0)
+                if not done_flag:
+                    for 
+
+            working_flag = not done_flag
+            self.production_rules = ll_rules
+            print(self.production_rules)
 
     def eliminate_immediate_left_recursion(self):
         if not self.is_immediate_left_recursive():
