@@ -172,6 +172,10 @@ class Parser:
             headers.append(i)
 
         print(tabulate(data,headers))
+        with open("syntax_analyzer_output.txt", "w") as file:
+            file.write(tabulate(data,headers))
+            file.write("\n\n")
+            file.close()
 
     def build(self):
         self.build_first()
@@ -280,3 +284,7 @@ class Parser:
             print("UNMatched",input)
         else:
             print(tabulate(simulation, ["stack","input","production used"]))
+            with open("syntax_analyzer_output.txt", "a") as file:
+                file.write(tabulate(simulation, ["stack","input","production used"]))
+                file.write("\n")
+                file.close()
