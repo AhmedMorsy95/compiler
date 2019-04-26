@@ -8,13 +8,14 @@ class Grammar:
         self.production_rules = production_rules
         self.start_symbol = start_symbol
         self.epsilon = '\L'
-        # print(self.is_left_recursive(stack = [self.start_symbol]))
         self.convert_to_ll_grammar()
 
     def convert_to_ll_grammar(self):
         print("Original grammar")
         print(self.production_rules)
+
         self.left_factor()
+        self.eliminate_immediate_left_recursion()
         self.eliminate_non_immediate_left_recursion()
         self.eliminate_immediate_left_recursion()
         self.eliminate_extra_epsilon()
@@ -77,6 +78,14 @@ class Grammar:
                             return True
         return False
 
+    def should_left_factor_rules(self, rules, non_terminal):
+        if len(rules) >= 2:
+            for i in range(0,len(rules)):
+                for j in range(i + 1, len(rules)):
+                    if rules[i][0] == rules[j][0]:
+                        return True
+        return False
+
     def left_factor(self):
         if self.needs_left_factoring():
             print("Left factoring grammar")
@@ -84,34 +93,34 @@ class Grammar:
             while working_flag:
                 done_flag = True
                 for non_terminal, rules in self.production_rules.items():
-                    prefixes = self.find_prefixes(rules)
-                    suffixes = self.find_prefix_suffixes(rules, prefixes)
-                    for key, suffix in suffixes.items():
-                        done_flag = done_flag and self.is_suffix_set_empty(suffix)
+                        done_flag = done_flag and not self.should_left_factor_rules(rules, non_terminal)
 
                 working_flag = not done_flag
+
                 if working_flag:
                     ll_rules = {}
                     for non_terminal, rules in self.production_rules.items():
-                        prefixes = self.find_prefixes(rules)
-                        suffixes = self.find_prefix_suffixes(rules, prefixes)
-                        ll_rules[non_terminal] = []
-                        for prefix in prefixes:
-                            if not self.is_suffix_set_empty(suffixes[prefix]):
-                                dash = '`'
-                                new_non_terminal = non_terminal + dash
-                                while new_non_terminal in ll_rules.keys():
-                                    new_non_terminal += dash
-                                ll_rules[new_non_terminal] = []
-                                ll_rules[non_terminal].append([prefix, new_non_terminal])
-                                for suffix in suffixes[prefix]:
-                                    suffix = list(suffix)
-                                    if len(suffix) == 0:
-                                        suffix = [self.epsilon]
-                                    ll_rules[new_non_terminal].append(list(suffix))
-                            else:
-                                ll_rules[non_terminal].append([prefix])
-
+                        if self.should_left_factor_rules(rules, non_terminal):
+                            prefixes = self.find_prefixes(rules)
+                            suffixes = self.find_prefix_suffixes(rules, prefixes)
+                            ll_rules[non_terminal] = []
+                            for prefix in prefixes:
+                                if not self.is_suffix_set_empty(suffixes[prefix]):
+                                    dash = '`'
+                                    new_non_terminal = non_terminal + dash
+                                    while new_non_terminal in ll_rules.keys():
+                                        new_non_terminal += dash
+                                    ll_rules[new_non_terminal] = []
+                                    ll_rules[non_terminal].append([prefix, new_non_terminal])
+                                    for suffix in suffixes[prefix]:
+                                        suffix = list(suffix)
+                                        if len(suffix) == 0:
+                                            suffix = [self.epsilon]
+                                        ll_rules[new_non_terminal].append(list(suffix))
+                                else:
+                                    ll_rules[non_terminal].append([prefix])
+                        else:
+                            ll_rules[non_terminal] = rules
                     self.production_rules = ll_rules
             print(self.production_rules)
 
@@ -171,7 +180,6 @@ class Grammar:
                         ll_rules[non_terminal].append(rule)
             self.production_rules = ll_rules
             print(self.production_rules)
-
 
     def is_left_recursive(self, stack = [], visited = [], flag = False):
         if len(stack) > 0:

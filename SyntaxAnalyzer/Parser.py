@@ -116,7 +116,7 @@ class Parser:
         if terminal in self.table[non_terminal].keys():
             print(non_terminal,terminal,list,self.table[non_terminal][terminal])
             if self.table[non_terminal][terminal] != list:
-                raise Exception('Grammar is not LL!\nMultiple entrie in 1 cell in the table')
+                raise Exception('Grammar is not LL! Multiple entries in cell ['+ non_terminal + '][' + terminal + '] in the table')
         else:
             self.table[non_terminal][terminal] = list
 
