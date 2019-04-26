@@ -6,10 +6,14 @@ class Grammar:
         self.production_rules = production_rules
         self.start_symbol = start_symbol
         self.epsilon = "\L"
-        # print(self.is_ll_grammar())
-        self.convert_to_ll_grammar()
+        print(self.is_left_recursive(stack = [self.start_symbol]))
+        # self.convert_to_ll_grammar()
 
     def convert_to_ll_grammar(self):
+        self.eliminate_immediate_left_recursion()
+        self.eliminate_non_immediate_left_recursion()
+
+    def eliminate_immediate_left_recursion(self):
         if not self.is_ll_grammar():
             print("Converting grammar to LL(1)")
             ll_rules = {}
@@ -45,6 +49,28 @@ class Grammar:
         for non_terminal, rules in self.production_rules.items():
             flag = flag and not self.is_immediate_left_recursive(non_terminal, rules)
         return flag
+
+    # def eliminate_non_immediate_left_recursion(self):
+    #     if self.is_left_recursive(stack = [self.start_symbol]):
+    #         ads
+
+    def is_left_recursive(self, stack = [], visited = [], flag = False):
+        if len(stack) > 0:
+            symbol = stack.pop()
+            if symbol in self.get_non_terminals():
+                if symbol in visited:
+                    flag = True
+                else:
+                    visited.append(symbol)
+                    for rule in self.production_rules[symbol]:
+                        stack.append(rule[0])
+                    flag = flag or self.is_left_recursive(stack, visited, flag)
+                    return flag
+            else:
+                flag = False
+            return flag or self.is_left_recursive(stack, visited, flag)
+        else:
+            return False
 
     def get_start_symbol(self):
         return self.start_symbol
